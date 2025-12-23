@@ -14,9 +14,15 @@ export interface PlayerInfo {
     level: number;
     rating: string;
     overpower: string;
+    sssCount : number;
+    sssPlusCount : number;
+    ajCount : number;
+    ajcCount : number;
+    fcCount : number
 }
 
 export interface ChuniData {
+    allCharts: number
     player: PlayerInfo;
     scores: ScoreData[];
 }
