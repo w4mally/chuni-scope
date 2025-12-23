@@ -103,22 +103,22 @@
     const totalUlt = getTotalCharts(recordDocUlt);
 
 // スコアデータ取得
-  const levelLabels = ["10", "10+", "11", "11+", "12", "12+", "13", "13+", "14", "14+", "15", "15+"];
-  const allScores = [];
+    const levelLabels = ["10", "10+", "11", "11+", "12", "12+", "13", "13+", "14", "14+", "15", "15+"];
+    const allScores = [];
 
-  for (let i = 0; i < levelLabels.length; i++) {
-    const levelIndex = i + 12; // Lv10は13番目なのでindex 12
-    const label = levelLabels[i];
-    console.log(`Lv ${label} を取得中...`);
+    for (let i = 0; i < levelLabels.length; i++) {
+        const levelIndex = i + 12; // Lv10は13番目なのでindex 12
+        const label = levelLabels[i];
+        console.log(`Lv ${label} を取得中...`);
 
-    const formData = new URLSearchParams();
-    formData.append('level', levelIndex);
-    formData.append('token', token);
+        const formData = new URLSearchParams();
+        formData.append('level', levelIndex);
+        formData.append('token', token);
 
-    // POSTで検索リクエストを送信
-    const res = await fetch("https://new.chunithm-net.com/chuni-mobile/html/mobile/record/musicLevel/sendSearch", {
-      method: "POST",
-      body: formData
+        // POSTで検索リクエストを送信
+        const res = await fetch("https://new.chunithm-net.com/chuni-mobile/html/mobile/record/musicLevel/sendSearch", {
+        method: "POST",
+        body: formData
     });
     
     const html = await res.text();
@@ -126,27 +126,27 @@
     const blocks = doc.querySelectorAll(".musiclist_box");
 
     blocks.forEach(block => {
-      let difficulty = "";
-      if (block.classList.contains("bg_master")) difficulty = "MASTER";
-      else if (block.classList.contains("bg_ultima")) difficulty = "ULTIMA";
-      
-      if (difficulty) {
-        const title = block.querySelector(".music_title")?.innerText.trim();
-        const score = block.querySelector(".play_musicdata_highscore .text_b")?.innerText.replace(/,/g, "");
+        let difficulty = "";
+        if (block.classList.contains("bg_master")) difficulty = "MASTER";
+        else if (block.classList.contains("bg_ultima")) difficulty = "ULTIMA";
+    
+        if (difficulty) {
+            const title = block.querySelector(".music_title")?.innerText.trim();
+            const score = block.querySelector(".play_musicdata_highscore .text_b")?.innerText.replace(/,/g, "");
         
-        allScores.push({
-          title,
-          difficulty,
-          levelStr: label,
-          score: score ? parseInt(score) : 0,
-          isPlayed: !!score && score !== "0"
-        });
-      }
+            allScores.push({
+                title,
+                difficulty,
+                levelStr: label,
+                score: score ? parseInt(score) : 0,
+                isPlayed: !!score && score !== "0"
+            });
+        }
     });
 
     // await sleep(1000); // 連続リクエストを避ける
-  }
-  
+    }
+
 const result = {
     allCharts: totalMas + totalUlt,
     player: {
@@ -159,14 +159,14 @@ const result = {
     },
     scores: allScores // ScoreData[] 型の配列
 };
-  const finalJson = JSON.stringify(result);
-  
-  try {
-    await navigator.clipboard.writeText(finalJson);
-    console.log("✅ 成功！クリップボードにJSONがコピーされました。");
-    console.log(`合計 ${allScores.length} 件の譜面データを取得しました。`);
-  } catch (err) {
-    console.error("コピーに失敗しました。以下のJSONをコピーしてください:");
-    console.log(finalJson);
-  }
+    const finalJson = JSON.stringify(result);
+
+    try {
+        await navigator.clipboard.writeText(finalJson);
+        console.log("✅ 成功！クリップボードにJSONがコピーされました。");
+        console.log(`合計 ${allScores.length} 件の譜面データを取得しました。`);
+    } catch (err) {
+        console.error("コピーに失敗しました。以下のJSONをコピーしてください:");
+        console.log(finalJson);
+    }
 })();

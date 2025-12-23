@@ -2,6 +2,7 @@ import { useState } from 'react';
 import type { ChuniData } from './types';
 import { calculateAverageForLevel, calculatePlayRate } from './utils/stats';
 import { getRank, getRankColor } from './utils/rank'
+import { getRatingStyle } from './utils/rating';
 
 const COLOR_VARIANTS = {
   yellow: { text: 'text-yellow-500', bg: 'bg-yellow-500' },
@@ -101,9 +102,11 @@ function App() {
                   <span className="text-blue-200 text-xs font-bold tracking-widest uppercase">Player Profile</span>
                   <h2 className="text-4xl font-black mt-1 mb-6">☆{data.player.reborn} <span className="text-sm">Lv.</span>{data.player.level}       {data.player.name}</h2>
                   <div className="grid grid-cols-2 gap-6">
-                    <div>
-                      <p className="text-blue-100 text-xs opacity-80">RATING</p>
-                      <p className="text-4xl font-black text-yellow-300 tracking-tighter">{data.player.rating}</p>
+                  <div>
+                    <p className="text-blue-100 text-xs opacity-80 font-bold">RATING</p>
+                    <p className={`text-5xl font-black tracking-tighter ${getRatingStyle(data.player.rating)}`}>
+                    {data.player.rating}
+                    </p>
                     </div>
                     <div>
                       <p className="text-2xl font-bold"></p>
@@ -132,7 +135,7 @@ function App() {
 <section className="w-full">
   <h3 className="text-lg font-bold mb-4 flex items-center gap-2">
     <span className="w-1.5 h-6 bg-orange-500 rounded-full"></span>
-    Record Statistics (Mas & Ult)
+    Record Statistics (MASTER & ULTIMA)
   </h3>
   {/* grid-cols-1 (スマホ)
     sm:grid-cols-2 (大きめのスマホ)
@@ -140,11 +143,11 @@ function App() {
     lg:grid-cols-5 (PC) 
   */}
 <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-3 md:gap-4">
-  <StatCard label="AJC" count={data.player.ajcCount} total={data.allCharts} colorKey="yellow" />
-  <StatCard label="AJ" count={data.player.ajCount} total={data.allCharts} colorKey="orange" />
-  <StatCard label="FC" count={data.player.fcCount} total={data.allCharts} colorKey="emerald" />
-  <StatCard label="SSS+" count={data.player.sssPlusCount} total={data.allCharts} colorKey="red" />
   <StatCard label="SSS" count={data.player.sssCount} total={data.allCharts} colorKey="rose" />
+  <StatCard label="SSS+" count={data.player.sssPlusCount} total={data.allCharts} colorKey="red" />
+  <StatCard label="AJ" count={data.player.ajCount} total={data.allCharts} colorKey="orange" />
+  <StatCard label="AJC" count={data.player.ajcCount} total={data.allCharts} colorKey="yellow" />
+  <StatCard label="FC" count={data.player.fcCount} total={data.allCharts} colorKey="emerald" />
 </div>
 </section>
 
