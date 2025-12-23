@@ -2,15 +2,15 @@
     console.log("データ取得を開始します...");
 
     // 1. 検索ページに移動して最新のトークンを取得する
-  const searchPageRes = await fetch("https://new.chunithm-net.com/chuni-mobile/html/mobile/record/musicLevel/search/");
-  const searchPageHtml = await searchPageRes.text();
-  const searchPageDoc = new DOMParser().parseFromString(searchPageHtml, "text/html");
-  const token = searchPageDoc.querySelector('input[name="token"]')?.value;
+    const searchPageRes = await fetch("https://new.chunithm-net.com/chuni-mobile/html/mobile/record/musicLevel/search/");
+    const searchPageHtml = await searchPageRes.text();
+    const searchPageDoc = new DOMParser().parseFromString(searchPageHtml, "text/html");
+    const token = searchPageDoc.querySelector('input[name="token"]')?.value;
 
-  if (!token) {
-    console.error("トークンが取得できませんでした。ログイン状態を確認してください。");
-    return;
-  }
+    if (!token) {
+        console.error("トークンが取得できませんでした。ログイン状態を確認してください。");
+        return;
+    }
 
     const fetchAndParse = async (url) => {
         try {
@@ -24,7 +24,7 @@
         }
     };
 
-  // 1. プレイヤー情報の取得
+    // 1. プレイヤー情報の取得
     const homeDoc = await fetchAndParse("https://new.chunithm-net.com/chuni-mobile/html/mobile/home/");
     if (!homeDoc) return;
 
@@ -33,25 +33,21 @@
     let ratingStr = "";
 
     if (ratingBlock) {
-  // ブロック内の子要素（画像とカンマ）をすべて取得してループ
-    const children = Array.from(ratingBlock.children);
+        const children = Array.from(ratingBlock.children);
 
-    children.forEach(child => {
-    if (child.tagName === "IMG") {
-      // src属性（例: "...rating_kiwami_01.png"）から数字部分を抽出
-        const src = child.src;
-        const match = src.match(/rating_.*_(\d+)\.png/);
-        if (match) {
-        // "01" なら 1、"10" なら 0 というマッピングが多い
-            const num = parseInt(match[1], 10);
-            ratingStr += (num % 10).toString(); 
-        }
-    } else if (child.classList.contains("player_rating_comma")) {
-      // カンマの要素が来たらドットを追加
-        ratingStr += ".";
+        children.forEach(child => {
+        if (child.tagName === "IMG") {
+            const src = child.src;
+            const match = src.match(/rating_.*_(\d+)\.png/);
+            if (match) {
+                const num = parseInt(match[1], 10);
+                ratingStr += (num % 10).toString(); 
+            }
+            } else if (child.classList.contains("player_rating_comma")) {
+                ratingStr += ".";
+            }
+        });
     }
-    });
-}
     // プレイヤーデータの取得
     const player = {
         name: homeDoc.querySelector(".player_name_in")?.innerText.trim() || "Unknown",
@@ -61,7 +57,52 @@
         overpower: homeDoc.querySelector(".player_overpower_text")?.innerText.trim() || "Unknown",
     };
 
-// 3. レベル別巡回 (Lv10 = index 12 から Lv15+ = index 23 まで)
+    console.log("統計を取得中...");
+    const recordDocMas = await fetchAndParse("https://new.chunithm-net.com/chuni-mobile/html/mobile/record/musicGenre/master");
+    const scoreListsMas = recordDocMas.querySelectorAll(".score_list");
+
+    let ajCount = 0;
+    let fcCount = 0;
+    let sssCount = 0;
+    let sssPlusCount = 0;
+    let ajcCount = 0;
+
+    scoreListsMas.forEach(list => {
+        const iconSrc = list.querySelector(".score_list_top img")?.src || "";
+        
+        const count = parseInt(list.querySelector(".score_num_text")?.innerText.replace(/,/g, "") || "0");
+
+        if (iconSrc.includes("icon_alljustice.png")) ajCount += count;    // AJ
+        if (iconSrc.includes("icon_alljusticecritical.png")) ajcCount += count;   // AJC
+        if (iconSrc.includes("icon_fullchain.png")) fcCount += count;    // fullchain
+        if (iconSrc.includes("icon_rank_12.png")) sssCount += count;   // SSS
+        if (iconSrc.includes("icon_rank_13.png")) sssPlusCount += count; // SSS+
+    });
+
+    const recordDocUlt = await fetchAndParse("https://new.chunithm-net.com/chuni-mobile/html/mobile/record/musicGenre/ultima");
+    const scoreListsUlt = recordDocUlt.querySelectorAll(".score_list");
+
+    scoreListsUlt.forEach(list => {
+        const iconSrc = list.querySelector(".score_list_top img")?.src || "";
+        
+        const count = parseInt(list.querySelector(".score_num_text")?.innerText.replace(/,/g, "") || "0");
+
+        if (iconSrc.includes("icon_alljustice.png")) ajCount += count;    // AJ
+        if (iconSrc.includes("icon_alljusticecritical.png")) ajcCount += count;   // AJC
+        if (iconSrc.includes("icon_fullchain.png")) fcCount += count;    // fullchain
+        if (iconSrc.includes("icon_rank_12.png")) sssCount += count;   // SSS
+        if (iconSrc.includes("icon_rank_13.png")) sssPlusCount += count; // SSS+
+    });
+
+    const getTotalCharts = (doc) => {
+        const text = doc.querySelector(".score_all_text")?.innerText || "0";
+        return parseInt(text.replace(/[\/,]/g, ""));
+    };
+
+    const totalMas = getTotalCharts(recordDocMas);
+    const totalUlt = getTotalCharts(recordDocUlt);
+
+// スコアデータ取得
   const levelLabels = ["10", "10+", "11", "11+", "12", "12+", "13", "13+", "14", "14+", "15", "15+"];
   const allScores = [];
 
@@ -83,10 +124,6 @@
     const html = await res.text();
     const doc = new DOMParser().parseFromString(html, "text/html");
     const blocks = doc.querySelectorAll(".musiclist_box");
-
-    if (blocks.length === 0) {
-      console.warn(`Lv ${label} のデータが見つかりませんでした。インデックスがズレている可能性があります。`);
-    }
 
     blocks.forEach(block => {
       let difficulty = "";
@@ -110,7 +147,18 @@
     // await sleep(1000); // 連続リクエストを避ける
   }
   
-  const result = { player, scores: allScores };
+const result = {
+    allCharts: totalMas + totalUlt,
+    player: {
+        ...player, // name, level, rating 等が含まれている想定
+        sssCount: sssCount,
+        sssPlusCount: sssPlusCount,
+        ajCount: ajCount,
+        ajcCount: ajcCount,
+        fcCount: fcCount,
+    },
+    scores: allScores // ScoreData[] 型の配列
+};
   const finalJson = JSON.stringify(result);
   
   try {
