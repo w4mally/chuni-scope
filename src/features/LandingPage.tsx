@@ -12,6 +12,14 @@ const LandingPage = () => {
 		setTimeout(() => setCopyStatus('idle'), 2000);
 	};
 
+	const updateHistory = [
+		{
+			date: '2025.12.25',
+			version: 'v0.0.1β',
+			content: 'ベータ版を公開しました。',
+		},
+	];
+
 	return (
 		<div className="max-w-4xl mx-auto space-y-16 py-12 animate-in fade-in duration-1000">
 			<header className="text-center space-y-6">
@@ -19,12 +27,13 @@ const LandingPage = () => {
 					CHUNI SCOPE
 				</h2>
 				<p className="text-xl text-slate-500 max-w-2xl mx-auto font-medium leading-relaxed">
-					CHUNI
-					SCOPEはログイン不要、ワンタッチであなたのCHUNITHMの実力を可視化する非公式スコアツールです。
+					CHUNI SCOPEはログイン不要、ワンタッチであなたのCHUNITHMの実力を
+					<br />
+					可視化する非公式スコアツールです。
 				</p>
 				<div className="flex justify-center pt-2">
 					<a
-						href="https://x.com/Alc5_" // ここにご自身のXのIDを入れてください
+						href="https://x.com/Alc5_"
 						target="_blank"
 						rel="noopener noreferrer"
 						className="group flex items-center gap-2 px-4 py-2 bg-white border border-slate-200 rounded-full text-slate-500 hover:text-blue-600 hover:border-blue-200 hover:bg-blue-50 transition-all duration-300 shadow-sm"
@@ -34,8 +43,7 @@ const LandingPage = () => {
 							fill="currentColor"
 							className="group-hover:scale-110 transition-transform"
 						/>
-						<span className="text-sm font-bold">Developed by @Alc5_
-						</span>
+						<span className="text-sm font-bold">Developed by @Alc5_</span>
 					</a>
 				</div>
 			</header>
@@ -72,25 +80,42 @@ const LandingPage = () => {
 					</div>
 
 					{/* ブックマークレット配布エリア */}
-					<div className="mt-12 bg-white/10 backdrop-blur-md rounded-3xl p-6 border border-white/20">
-						<div className="flex flex-col md:flex-row items-center gap-4">
+					<div className="mt-16 bg-white/10 backdrop-blur-md rounded-[2rem] p-8 border border-white/20 shadow-xl">
+						<div className="flex flex-col md:flex-row items-center gap-6">
 							<div className="flex-1 min-w-0 w-full">
-								<p className="text-[10px] font-black uppercase tracking-widest text-blue-200 mb-2">
+								<p className="text-xs font-black uppercase tracking-widest text-blue-200 mb-3 ml-1">
 									Bookmarklet Code
 								</p>
-								<div className="bg-black/20 p-3 rounded-xl font-mono text-[10px] break-all line-clamp-2 opacity-70">
+								{/* コード表示エリアを大きく、文字も少し大きく */}
+								<div className="bg-black/30 p-5 rounded-2xl font-mono text-xs md:text-sm break-all line-clamp-3 opacity-80 leading-relaxed">
 									{bookmarkletCode}
 								</div>
 							</div>
+
+							{/* ボタンを大きく、文字サイズもアップ */}
 							<button
 								onClick={copyToClipboard}
-								className={`whitespace-nowrap px-8 py-4 rounded-2xl font-black text-sm transition-all active:scale-95 ${
+								className={`w-30 flex justify-center items-center whitespace-nowrap px-10 py-5 rounded-2xl font-black text-lg shadow-lg transition-all active:scale-95 hover:scale-105 ${
 									copyStatus === 'success'
-										? 'bg-emerald-400 text-white'
+										? 'bg-white text-blue-600 hover:bg-blue-50'
 										: 'bg-white text-blue-600 hover:bg-blue-50'
 								}`}
 							>
-								{copyStatus === 'success' ? 'COPIED! ✅' : 'コードをコピー'}
+								{copyStatus === 'success' ? (
+									<span className="flex items-center gap-2">
+										<svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+											<path
+												strokeLinecap="round"
+												strokeLinejoin="round"
+												strokeWidth="3"
+												d="M5 13l4 4L19 7"
+											></path>
+										</svg>
+										Copied!
+									</span>
+								) : (
+									'Copy'
+								)}
 							</button>
 						</div>
 					</div>
@@ -105,6 +130,7 @@ const LandingPage = () => {
 					<div className="text-center max-w-2xl mx-auto">
 						<p className="text-slate-600 text-lg font-medium leading-relaxed">
 							CHUNI SCOPEでは、あなたのCHUNITHMの実力を一瞬でまとめることができます。
+							<br />
 							まとめた結果は画像にして保存できます。
 						</p>
 					</div>
@@ -118,11 +144,11 @@ const LandingPage = () => {
 							},
 							{
 								title: '詳しいプレイ統計',
-								desc: 'SSS/SSS+/AJ/AJCの取得数をレベル別に集計。あなたの各レベルの埋め具合がすぐに分かります。',
+								desc: 'SSS/AJ/AJCの取得数をレベル別に集計。あなたの各レベルの埋め具合がすぐに分かります。',
 							},
 							{
 								title: 'セキュリティに配慮した設計',
-								desc: 'データ収集はブラウザ上でのみ行われ、ログイン情報などの収集は行いません。また、サーバーにプレイデータが保存されることもありません。',
+								desc: 'データ収集はブラウザ上のみで行われ、ログイン情報の記録などは行いません。',
 							},
 						].map((feature, i) => (
 							<li
@@ -151,6 +177,29 @@ const LandingPage = () => {
 					</ul>
 				</div>
 			</section>
+
+			{/* 更新履歴リスト本体 */}
+			<div className="bg-white/5 backdrop-blur-sm border border-white/10 rounded-3xl p-6 md:p-8">
+				<div className="relative border-l border-white/10 ml-3 space-y-8 py-2">
+							<h2>更新履歴</h2>
+					{updateHistory.map((item, index) => (
+						<div key={index} className="relative pl-8 group">
+							<div className="flex flex-col sm:flex-row sm:items-baseline gap-1 sm:gap-4 mb-1">
+								{/* 日付 */}
+								<span className="font-mono text-xs font-bold text-blue">{item.date}</span>
+								{/* バージョンバッジ */}
+								<span className="bg-blue-500 text-blue text-[10px] font-bold px-2 py-0.5 rounded border border-blue-400/20 w-fit">
+									{item.version}
+								</span>
+							</div>
+
+							{/* 内容 */}
+							<p className="text-sm text-black-300 leading-relaxed">{item.content}</p>
+						</div>
+					))}
+				</div>
+			</div>
+
 			{/* フッター・免責事項 */}
 			<footer className="mt-20 py-12 border-t border-slate-200">
 				<div className="max-w-3xl mx-auto px-6 text-center space-y-4">
