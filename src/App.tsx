@@ -41,7 +41,7 @@ function App() {
 	return (
 		<div className="min-h-screen bg-slate-50 text-slate-900 font-sans pb-12">
 			{/* ナビゲーションバー */}
-			<nav className="bg-white border-b border-slate-200 py-4 mb-8 sticky top-0 z-10 shadow-sm">
+			<nav className="bg-white border-b border-slate-200 py-4 mb-8 sticky top-0 z-50 shadow-sm">
 				<div className="max-w-5xl mx-auto px-4 flex justify-between items-center">
 					<h1 className="text-xl font-black tracking-tighter text-blue-600">CHUNI SCOPE</h1>
 
