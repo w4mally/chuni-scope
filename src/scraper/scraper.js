@@ -40,6 +40,37 @@
 		}
 	};
 
+	const finalize = (data) => {
+		const stElement = document.getElementById('st');
+		stElement.innerHTML = `
+        <button id="openAppBtn" style="
+            width: 100%; 
+            padding: 14px; 
+            background: #3b82f6; 
+            color: white;
+            border: none; 
+            border-radius: 8px; 
+            font-size: 16px; 
+            font-weight: 700;
+            cursor: pointer;
+            margin-top: 12px;
+            display: block;
+        ">
+            データの収集が完了しました！
+            <div style="font-size: 11px; font-weight: 400; opacity: 0.9; margin-top: 2px;">
+                タップして結果を見る
+            </div>
+        </button>
+    `;
+
+		document.getElementById('openAppBtn').onclick = () => {
+			// const appUrl = "https://chuni-scope.vercel.app/?auto_import=true";
+            const appUrl = "http://localhost:5173/?auto_import=true";
+			window.name = encodeURIComponent(JSON.stringify(data));
+			location.href = appUrl;
+		};
+	};
+
 	// 1. プレイヤー情報とトークン取得
 	setStatus('トークンを生成中...');
 	const homeDoc = await fetchAndParse(
@@ -179,9 +210,5 @@
 		scores: allScores,
 	};
 
-	setStatus('集計が完了しました。CHUNI SCOPEへ移動します…');
-	window.name = JSON.stringify(result);
-	const appUrl = 'https://chuni-scope.vercel.app/?auto_import=true';
-
-	window.location.href = appUrl;
+	finalize(result);
 })();

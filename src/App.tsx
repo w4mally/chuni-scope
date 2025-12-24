@@ -7,26 +7,22 @@ import DifficultySummary from './features/DifficultySummary';
 import LandingPage from './features/LandingPage';
 
 function App() {
-const [data, setData] = useState<ChuniData | null>(() => {
-    const params = new URLSearchParams(window.location.search);
-    if (params.get('auto_import') === 'true' && window.name) {
-      try {
-        const json = JSON.parse(window.name);
-        window.name = ""; // 読み込み後にクリア
-        return json;
-      } catch (e) {
-        return null;
-      }
-    }
-    return null;
-  });
+const [data, setData] = useState<ChuniData | null>(null);
 
-  useEffect(() => {
-    const params = new URLSearchParams(window.location.search);
-    if (params.get('auto_import') === 'true') {
-      window.history.replaceState({}, document.title, window.location.pathname);
-    }
-  }, [])
+useEffect(() => {
+  const params = new URLSearchParams(window.location.search);
+  if (params.get('auto_import') === 'true' && window.name) {
+    try {
+      const json = JSON.parse(decodeURIComponent(window.name));
+      setData(json);
+      window.name = "";
+    } catch {}
+  }
+
+  if (params.get('auto_import') === 'true') {
+    window.history.replaceState({}, document.title, window.location.pathname);
+  }
+}, []);
   
 	const contentRef = useRef<HTMLDivElement>(null);
 
