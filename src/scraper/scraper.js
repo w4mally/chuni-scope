@@ -179,7 +179,14 @@ const finalize = async (data) => {
 		});
 	}
 
-	// 3. 全体統計の算出
+	if (allScores.length === 0) {
+        setStatus('Error: 楽曲データが取得できませんでした');
+        stElement = document.getElementById('st');
+        if(stElement) stElement.style.color = "#ef4444";
+        
+        alert('楽曲データが見つかりませんでした。\nプレイデータがないか、通信エラーの可能性があります。');
+        return; 
+    }
 	const totalStats = Object.values(levelStats).reduce(
 		(acc, curr) => ({
 			sss: acc.sss + curr.sss,
