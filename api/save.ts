@@ -2,8 +2,6 @@ import { VercelRequest, VercelResponse } from '@vercel/node';
 import Redis from 'ioredis';
 import { v4 as uuidv4 } from 'uuid';
 
-const redis = new Redis(process.env.REDIS_URL!);
-
 const ALLOWED_ORIGINS = [
 	'https://new.chunithm-net.com',
 	'http://localhost:3000',
@@ -12,6 +10,7 @@ const ALLOWED_ORIGINS = [
 
 export default async function handler(req: VercelRequest, res: VercelResponse) {
 	const origin = req.headers.origin;
+    const redis = new Redis(process.env.REDIS_URL!);
 
 	if (origin && ALLOWED_ORIGINS.includes(origin)) {
 		res.setHeader('Access-Control-Allow-Origin', origin);
