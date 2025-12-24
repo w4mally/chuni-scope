@@ -40,36 +40,40 @@
 		}
 	};
 
-	const finalize = (data) => {
-		const stElement = document.getElementById('st');
-		stElement.innerHTML = `
-        <button id="openAppBtn" style="
+const finalize = (data) => {
+    const stElement = document.getElementById('st');
+    const json = JSON.stringify(data);
+    const appUrl = "https://chuni-scope.vercel.app/?auto_import=true";
+    // const appUrl = "http://localhost:5173/?auto_import=true";
+
+    // dataURL等ではなく、生の<a>タグを生成
+    stElement.innerHTML = `
+        <a id="openAppLink" href="${appUrl}" style="
+            display: block;
+            text-decoration: none;
             width: 100%; 
             padding: 14px; 
             background: #3b82f6; 
             color: white;
-            border: none; 
             border-radius: 8px; 
             font-size: 16px; 
             font-weight: 700;
-            cursor: pointer;
+            text-align: center;
             margin-top: 12px;
-            display: block;
+            box-sizing: border-box;
         ">
-            データの収集が完了しました！
+            ANALYSIS COMPLETE
             <div style="font-size: 11px; font-weight: 400; opacity: 0.9; margin-top: 2px;">
-                タップして結果を見る
+                Tap to open CHUNI SCOPE
             </div>
-        </button>
+        </a>
     `;
 
-		document.getElementById('openAppBtn').onclick = () => {
-			// const appUrl = "https://chuni-scope.vercel.app/?auto_import=true";
-            const appUrl = "http://localhost:5173/?auto_import=true";
-			window.name = encodeURIComponent(JSON.stringify(data));
-			location.href = appUrl;
-		};
-	};
+    document.getElementById('openAppLink').onclick = (e) => {
+        window.name = json;
+        return true;
+    };
+};
 
 	// 1. プレイヤー情報とトークン取得
 	setStatus('トークンを生成中...');
