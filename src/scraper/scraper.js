@@ -40,42 +40,32 @@
 		}
 	};
 
-const finalize = (data) => {
+const finalize = async (data) => {
     const stElement = document.getElementById('st');
-    const json = JSON.stringify(data);
-    const appUrl = "https://chuni-scope.vercel.app/?auto_import=true";
-    // const appUrl = "http://localhost:5173/?auto_import=true";
+    stElement.innerHTML = `<div style="padding:10px; background:#fff; font-weight:bold;">Saving data to cloud...</div>`;
 
-    // dataURL等ではなく、生の<a>タグを生成
-    stElement.innerHTML = `
-        <a id="openAppLink" href="${appUrl}" style="
-            display: block;
-            text-decoration: none;
-            width: 100%; 
-            padding: 14px; 
-            background: #3b82f6; 
-            color: white;
-            border-radius: 8px; 
-            font-size: 16px; 
-            font-weight: 700;
-            text-align: center;
-            margin-top: 12px;
-            box-sizing: border-box;
-        ">
-            ANALYSIS COMPLETE
-            <div style="font-size: 11px; font-weight: 400; opacity: 0.9; margin-top: 2px;">
-                Tap to open CHUNI SCOPE
-            </div>
-        </a>
-    `;
+    const baseUrl = "https://chuni-scope.vercel.app";
 
-    document.getElementById('openAppLink').onclick = (e) => {
-        window.name = json;
-        return true;
-    };
+    try {
+        const response = await fetch(`${baseUrl}/api/save`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(data)
+        });
+
+        if (!response.ok) throw new Error("API Error: " + response.status);
+
+        const result = await response.json();
+        const id = result.id;
+
+        window.location.href = `${baseUrl}/?id=${id}`;
+
+    } catch (e) {
+        console.error(e);
+        stElement.innerHTML = `<div style="color:red; background:#fee; padding:10px;">Error: ${e.message}</div>`;
+    }
 };
 
-	// 1. プレイヤー情報とトークン取得
 	setStatus('トークンを生成中...');
 	const homeDoc = await fetchAndParse(
 		'https://new.chunithm-net.com/chuni-mobile/html/mobile/home/'
@@ -86,7 +76,6 @@ const finalize = (data) => {
 	const token = searchDoc?.querySelector('input[name="token"]')?.value;
 	if (!token) return console.error('トークン取得失敗しました。ログインし直してください。');
 
-	// レーティング画像のブロックを取得
 	setStatus('プレイヤー情報を取得中...');
 	const ratingBlock = homeDoc.querySelector('.player_rating_num_block');
 	let ratingStr = '';
@@ -116,7 +105,6 @@ const finalize = (data) => {
 		overpower: homeDoc.querySelector('.player_overpower_text')?.innerText.trim(),
 	};
 
-	// 2. スコアデータとレベル別統計の取得
 	const levelLabels = [
 		'10',
 		'10+',
@@ -149,7 +137,6 @@ const finalize = (data) => {
 		const doc = new DOMParser().parseFromString(await res.text(), 'text/html');
 		const blocks = doc.querySelectorAll('.musiclist_box');
 
-		// このレベルの統計を初期化
 		levelStats[label] = { total: 0, sss: 0, sssPlus: 0, aj: 0, ajc: 0, fc: 0 };
 
 		blocks.forEach((block) => {

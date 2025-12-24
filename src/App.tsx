@@ -7,28 +7,36 @@ import DifficultySummary from './features/DifficultySummary';
 import LandingPage from './features/LandingPage';
 
 function App() {
-	const [data, setData] = useState<ChuniData | null>(() => {
-		const params = new URLSearchParams(window.location.search);
-		if (params.get('auto_import') === 'true' && window.name) {
-			try {
-				const json = JSON.parse(window.name);
-				window.name = ''; // 読み込み後にクリア
-				return json;
-			} catch (e) {
-				return null;
-			}
-		}
-		return null;
-	});
+	const contentRef = useRef<HTMLDivElement>(null);
+	const [data, setData] = useState<ChuniData | null>(null);
+	const [loading, setLoading] = useState(false);
 
 	useEffect(() => {
 		const params = new URLSearchParams(window.location.search);
-		if (params.get('auto_import') === 'true') {
-			window.history.replaceState({}, document.title, window.location.pathname);
+		const id = params.get('id');
+
+		if (id) {
+			setLoading(true);
+			fetch(`/api/load?id=${id}`)
+				.then(async (res) => {
+					if (!res.ok) throw new Error('Data not found');
+					return res.json();
+				})
+				.then((fetchedData) => {
+					setData(fetchedData);
+					window.history.replaceState(null, '', window.location.pathname);
+				})
+				.catch((err) => {
+					console.error(err);
+					alert('データの読み込みに失敗しました');
+				})
+				.finally(() => setLoading(false));
 		}
 	}, []);
 
-	const contentRef = useRef<HTMLDivElement>(null);
+	if (loading) {
+		return <div className="p-10 text-center font-bold">Loading data from server...</div>;
+	}
 
 	return (
 		<div className="min-h-screen bg-slate-50 text-slate-900 font-sans pb-12">
