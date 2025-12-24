@@ -26,7 +26,6 @@
 `;
 	document.body.appendChild(overlay);
 
-	// ステータス更新用の関数（シンプルにテキストのみ）
 	const setStatus = (msg) => {
 		document.getElementById('st').innerText = msg;
 	};
@@ -126,7 +125,7 @@
 					: null;
 			if (!difficulty) return;
 
-			levelStats[label].total++; // 全譜面数をカウント
+			levelStats[label].total++;
 
 			const scoreRaw = block
 				.querySelector('.play_musicdata_highscore .text_b')
@@ -182,7 +181,7 @@
 
 	setStatus('集計が完了しました。CHUNI SCOPEへ移動します…');
 	window.name = JSON.stringify(result);
-	const appUrl = 'http://localhost:5173/?auto_import=true';
+	const appUrl = 'https://chuni-scope.vercel.app/?auto_import=true';
 
 	window.location.href = appUrl;
 })();
