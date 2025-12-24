@@ -1,8 +1,9 @@
-import { useState } from 'react';
+import { useState, useRef } from 'react';
 import type { ChuniData } from './types';
 import { calculateAverageForLevel, calculatePlayRate } from './utils/stats';
 import { getRank, getRankColor } from './utils/rank'
 import { getRatingStyle } from './utils/rating';
+import ShareButton from './components/shareButton';
 
 const COLOR_VARIANTS = {
   yellow: { text: 'text-yellow-500', bg: 'bg-yellow-500' },
@@ -49,6 +50,7 @@ const StatCard = ({ label, count, total, colorKey }: { label: string, count: num
 };
 function App() {
   const [data, setData] = useState<ChuniData | null>(null);
+  const contentRef = useRef<HTMLDivElement>(null);
   const levels = ["10", "10+", "11", "11+", "12", "12+", "13", "13+", "14", "14+", "15", "15+"];
 
   const handlePaste = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
@@ -62,17 +64,24 @@ function App() {
 
   return (
     <div className="min-h-screen bg-slate-50 text-slate-900 font-sans pb-12">
-      {/* ヘッダー */}
+{/* ナビゲーションバー */}
       <nav className="bg-white border-b border-slate-200 py-4 mb-8 sticky top-0 z-10 shadow-sm">
         <div className="max-w-5xl mx-auto px-4 flex justify-between items-center">
           <h1 className="text-xl font-black tracking-tighter text-blue-600">CHUNI SCOPE</h1>
+          
+          {/* データがある時だけボタンを表示 */}
           {data && (
-            <button 
-              onClick={() => setData(null)}
-              className="text-xs bg-slate-100 hover:bg-slate-200 text-slate-600 px-3 py-1.5 rounded-full transition"
-            >
-              データをリセット
-            </button>
+            <div className="flex items-center gap-3">
+              {/* ここに共有ボタンを追加し、refを渡す */}
+              <ShareButton targetRef={contentRef} />
+              
+              <button 
+                onClick={() => setData(null)}
+                className="text-xs bg-slate-100 hover:bg-slate-200 text-slate-600 px-3 py-1.5 rounded-full transition"
+              >
+                データをリセット
+              </button>
+            </div>
           )}
         </div>
       </nav>
@@ -94,13 +103,14 @@ function App() {
 
         {data && (
           <div className="space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-700">
-            
+            <div ref={contentRef} className="bg-slate-50 p-4 -m-4 rounded-xl">
+            <div className="space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-700">
             {/* プレイヤー情報カード */}
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
               <div className="md:col-span-2 bg-gradient-to-br from-blue-600 to-indigo-700 p-8 rounded-3xl shadow-lg shadow-blue-200 text-white relative overflow-hidden">
                 <div className="relative z-10">
                   <span className="text-blue-200 text-xs font-bold tracking-widest uppercase">Player Profile</span>
-                  <h2 className="text-4xl font-black mt-1 mb-6">☆{data.player.reborn} <span className="text-sm">Lv.</span>{data.player.level}       {data.player.name}</h2>
+                  <h2 className="text-4xl font-black mt-1 mb-6">{data.player.name}</h2>
                   <div className="grid grid-cols-2 gap-6">
                   <div>
                     <p className="text-blue-100 text-xs opacity-80 font-bold">RATING</p>
@@ -171,7 +181,7 @@ function App() {
                     >
                       <p className="text-xs font-black text-slate-400 mb-1">LEVEL {lv}</p>
                       <p className={`text-lg font-black tracking-tighter ${isNoData ? 'text-slate-300' : 'text-slate-800'}`}>
-                        {isNoData ? 'NO DATA' : avg.toLocaleString()}
+                        {isNoData ? 'NO DATA' : 'AVG: '+avg.toLocaleString()}
                       </p>
                       {!isNoData && (
                         <div className="mt-2 flex items-center gap-1">
@@ -185,6 +195,8 @@ function App() {
                 })}
               </div>
             </section>
+          </div>
+          </div>
           </div>
         )}
       </div>
