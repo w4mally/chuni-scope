@@ -7,56 +7,63 @@ interface PlayerProfileProps {
 }
 
 const PlayerProfile = ({ data }: PlayerProfileProps) => {
+	const playRate = calculatePlayRate(data.scores).toFixed(1);
+	// OVERPOWERの表示を整形
+	const opMatch = data.player.overpower.match(/^([\d.]+)\s+\(([\d.]+%)\)$/);
+	const opValue = opMatch ? opMatch[1] : data.player.overpower;
+	const opPercent = opMatch ? opMatch[2] : '';
+
+	const labelStyle = 'text-blue-200 text-[10px] font-bold uppercase tracking-wider mb-1 opacity-80';
+
+	const valueBaseStyle = 'text-4xl md:text-5xl font-black tracking-tighter leading-none';
+
 	return (
 		<div className="bg-gradient-to-br from-blue-600 to-indigo-700 p-8 rounded-3xl shadow-lg shadow-blue-200 text-white relative overflow-hidden">
-			<div className="relative z-10 flex flex-col md:flex-row md:items-end justify-between gap-6">
-				{/* 左側：名前とレーティング */}
-				<div className="space-y-6">
+			<div className="relative z-10 flex flex-col gap-8">
+				{/* 上段：名前とレベル */}
+				<div className="flex flex-col md:flex-row md:items-end justify-between gap-4">
 					<div>
-						<span className="text-blue-200 text-xs font-bold tracking-widest uppercase opacity-80">
-							Player Profile
-						</span>
-						<h2 className="text-4xl font-black mt-1 leading-none">{data.player.name}</h2>
+						<span className={labelStyle}>Player Profile</span>
+						<h2 className="text-3xl md:text-4xl font-black mt-1 leading-none truncate">
+							{data.player.name}
+						</h2>
 					</div>
-
-					<div>
-						<p className="text-blue-200 text-[10px] font-bold uppercase tracking-wider mb-1 opacity-80">
-							Rating
-						</p>
-						<p
-							className={`text-6xl font-black tracking-tighter leading-none ${getRatingStyle(data.player.rating)}`}
-						>
-							{data.player.rating}
-						</p>
-					</div>
-				</div>
-
-				{/* 右側：詳細ステータス（Level, OP, PlayRate） */}
-				<div className="grid grid-cols-2 md:grid-cols-1 gap-y-4 gap-x-8 border-t md:border-t-0 md:border-l border-white/10 pt-6 md:pt-0 md:pl-8">
-					<div>
-						<p className="text-blue-200 text-[10px] font-bold uppercase tracking-wider opacity-80">
-							Level
-						</p>
+					{/* レベルを右上に控えめに配置 */}
+					<div className="text-right">
+						<p className={labelStyle}>Level</p>
 						<p className="text-xl font-bold">
 							☆{data.player.reborn} <span className="text-sm opacity-80">Lv.</span>
 							{data.player.level}
 						</p>
 					</div>
+				</div>
 
+				{/* 下段：主要ステータス横並び（スマホでは縦） */}
+				<div className="grid grid-cols-1 md:grid-cols-3 gap-6 pt-6 border-t border-white/10">
+					{/* RATING */}
 					<div>
-						<p className="text-blue-200 text-[10px] font-bold uppercase tracking-wider opacity-80">
-							Overpower
+						<p className={labelStyle}>Rating</p>
+						<p className={`${valueBaseStyle} ${getRatingStyle(data.player.rating)}`}>
+							{data.player.rating}
 						</p>
-						<p className="text-xl font-black text-white">{data.player.overpower}</p>
 					</div>
 
-					<div className="col-span-2 md:col-span-1">
-						<p className="text-blue-200 text-[10px] font-bold uppercase tracking-wider opacity-80">
-							Play Rate
-						</p>
-						<p className="text-2xl font-black text-green-400">
-							{calculatePlayRate(data.scores).toFixed(1)}
-							<span className="text-sm ml-1">%</span>
+					{/* OVERPOWER */}
+					{/* PC画面では左に区切り線を入れる */}
+					<div className="md:border-l md:pl-6 border-white/10">
+						<p className={labelStyle}>Overpower</p>
+						<div className="flex items-baseline gap-2 flex-wrap">
+							<p className={`${valueBaseStyle} text-white`}>{opValue}</p>
+							{opPercent && <p className="text-xl font-bold opacity-80">{opPercent}</p>}
+						</div>
+					</div>
+
+					{/* PLAY RATE */}
+					<div className="md:border-l md:pl-6 border-white/10">
+						<p className={labelStyle}>Play Rate</p>
+						<p className={`${valueBaseStyle} text-green-400`}>
+							{playRate}
+							<span className="text-2xl md:text-3xl ml-1">%</span>
 						</p>
 					</div>
 				</div>
