@@ -1,8 +1,8 @@
 (async () => {
 	if (window.location.hostname !== 'new.chunithm-net.com') {
-        alert('このブックマークレットは CHUNITHM-NET (new.chunithm-net.com) で実行してください。');
-        return;
-    }
+		alert('このブックマークレットは CHUNITHM-NET (new.chunithm-net.com) で実行してください。');
+		return;
+	}
 
 	const overlay = document.createElement('div');
 	overlay.style = `
@@ -35,6 +35,18 @@
 		document.getElementById('st').innerText = msg;
 	};
 
+	const autoClose = (delay = 4000) => {
+		setTimeout(() => {
+			if (overlay && overlay.parentNode) {
+				overlay.style.opacity = '0';
+				overlay.style.transform = 'translateY(-20px)';
+				setTimeout(() => {
+					if (overlay.parentNode) overlay.parentNode.removeChild(overlay);
+				}, 500);
+			}
+		}, delay);
+	};
+
 	const fetchAndParse = async (url, options = {}) => {
 		try {
 			const res = await fetch(url, options);
@@ -45,31 +57,31 @@
 		}
 	};
 
-const finalize = async (data) => {
-    const stElement = document.getElementById('st');
-    stElement.innerText = "データ送信中";
+	const finalize = async (data) => {
+		const stElement = document.getElementById('st');
+		stElement.innerText = 'データ送信中';
 
-    const baseUrl = "https://chuni-scope.vercel.app";
+		const baseUrl = 'https://chuni-scope.vercel.app';
 
-    try {
-        const response = await fetch(`${baseUrl}/api/save`, {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify(data)
-        });
+		try {
+			const response = await fetch(`${baseUrl}/api/save`, {
+				method: 'POST',
+				headers: { 'Content-Type': 'application/json' },
+				body: JSON.stringify(data),
+			});
 
-        if (!response.ok) throw new Error("API Error: " + response.status);
+			if (!response.ok) throw new Error('API Error: ' + response.status);
 
-        const result = await response.json();
-        const id = result.id;
+			const result = await response.json();
+			const id = result.id;
 
-        window.location.href = `${baseUrl}/?id=${id}`;
-
-    } catch (e) {
-        console.error(e);
-        stElement.innerHTML = `<div style="color:red; background:#fee; padding:10px;">Error: ${e.message}</div>`;
-    }
-};
+			window.location.href = `${baseUrl}/?id=${id}`;
+		} catch (e) {
+			console.error(e);
+			stElement.innerHTML = `<div style="color:red; background:#fee; padding:10px;">Error: ${e.message}</div>`;
+			autoClose(2000);
+		}
+	};
 
 	setStatus('トークンを生成中...');
 	const homeDoc = await fetchAndParse(
@@ -79,7 +91,15 @@ const finalize = async (data) => {
 		'https://new.chunithm-net.com/chuni-mobile/html/mobile/record/musicLevel/'
 	);
 	const token = searchDoc?.querySelector('input[name="token"]')?.value;
-	if (!token) return console.error('トークン取得失敗しました。ログインし直してください。');
+	if (!token) {
+		setStatus('Error: トークンが見つかりません');
+		const stElement = document.getElementById('st');
+		if (stElement) stElement.style.color = '#ef4444';
+
+		alert('トークンの取得に失敗しました。再ログインしてください。');
+		autoClose(500);
+		return;
+	}
 
 	setStatus('プレイヤー情報を取得中...');
 	const ratingBlock = homeDoc.querySelector('.player_rating_num_block');
@@ -180,13 +200,16 @@ const finalize = async (data) => {
 	}
 
 	if (allScores.length === 0) {
-        setStatus('Error: 楽曲データが取得できませんでした');
-        stElement = document.getElementById('st');
-        if(stElement) stElement.style.color = "#ef4444";
-        
-        alert('楽曲データが見つかりませんでした。\nプレイデータがないか、通信エラーの可能性があります。');
-        return; 
-    }
+		setStatus('Error: 楽曲データが取得できませんでした');
+		stElement = document.getElementById('st');
+		if (stElement) stElement.style.color = '#ef4444';
+
+		alert(
+			'楽曲データが見つかりませんでした。\nプレイデータがないか、通信エラーの可能性があります。'
+		);
+		autoClose(500);
+		return;
+	}
 	const totalStats = Object.values(levelStats).reduce(
 		(acc, curr) => ({
 			sss: acc.sss + curr.sss,
