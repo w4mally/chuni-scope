@@ -141,60 +141,108 @@ function App() {
                 </div>
               </div>
             </div>
-{/* 実績統計セクション */}
-<section className="w-full">
-  <h3 className="text-lg font-bold mb-4 flex items-center gap-2">
-    <span className="w-1.5 h-6 bg-orange-500 rounded-full"></span>
-    Record Statistics (MASTER & ULTIMA)
-  </h3>
+            {/* 実績統計セクション */}
+            <section className="w-full">
+              <h3 className="text-lg font-bold mb-4 flex items-center gap-2">
+              <span className="w-1.5 h-6 bg-orange-500 rounded-full"></span>
+                All Record Statistics (MASTER & ULTIMA)
+              </h3>
   {/* grid-cols-1 (スマホ)
     sm:grid-cols-2 (大きめのスマホ)
     md:grid-cols-3 (タブレット)
     lg:grid-cols-5 (PC) 
   */}
 <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-3 md:gap-4">
-  <StatCard label="SSS" count={data.player.sssCount} total={data.allCharts} colorKey="rose" />
-  <StatCard label="SSS+" count={data.player.sssPlusCount} total={data.allCharts} colorKey="red" />
-  <StatCard label="AJ" count={data.player.ajCount} total={data.allCharts} colorKey="orange" />
-  <StatCard label="AJC" count={data.player.ajcCount} total={data.allCharts} colorKey="yellow" />
-  <StatCard label="FC" count={data.player.fcCount} total={data.allCharts} colorKey="emerald" />
+  <StatCard label="SSS" count={data.player.sss} total={data.allCharts} colorKey="rose" />
+  <StatCard label="SSS+" count={data.player.sssPlus} total={data.allCharts} colorKey="red" />
+  <StatCard label="AJ" count={data.player.aj} total={data.allCharts} colorKey="orange" />
+  <StatCard label="AJC" count={data.player.ajc} total={data.allCharts} colorKey="yellow" />
+  <StatCard label="FC" count={data.player.fc} total={data.allCharts} colorKey="emerald" />
 </div>
 </section>
 
-            {/* レベル別平均スコア */}
-            <section>
-              <h3 className="text-lg font-bold mb-4 flex items-center gap-2">
-                <span className="w-1.5 h-6 bg-blue-500 rounded-full"></span>
-                Difficulty Summary
-              </h3>
-              <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4">
-                {levels.map(lv => {
-                  const avg = calculateAverageForLevel(data.scores, lv);
-                  const isNoData = avg === 0;
+{/* レベル別平均スコアセクション */}
+<section>
+  <h3 className="text-lg font-bold mb-4 flex items-center gap-2">
+    <span className="w-1.5 h-6 bg-blue-500 rounded-full"></span>
+    Difficulty Summary (MASTER & ULTIMA)
+  </h3>
+  <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-3">
+    {levels.map(lv => {
+      const avg = calculateAverageForLevel(data.scores, lv);
+      const stats = data.levelStats[lv] || { total: 0, sss: 0, aj: 0, ajc: 0 };
+      const isNoData = stats.total === 0;
 
-                  return (
-                    <div 
-                      key={lv} 
-                      className={`p-4 rounded-2xl border transition-all ${
-                        isNoData ? 'bg-slate-50 border-slate-100 opacity-50' : 'bg-white border-slate-200 shadow-sm hover:shadow-md'
-                      }`}
-                    >
-                      <p className="text-xs font-black text-slate-400 mb-1">LEVEL {lv}</p>
-                      <p className={`text-lg font-black tracking-tighter ${isNoData ? 'text-slate-300' : 'text-slate-800'}`}>
-                        {isNoData ? 'NO DATA' : 'AVG: '+avg.toLocaleString()}
-                      </p>
-                      {!isNoData && (
-                        <div className="mt-2 flex items-center gap-1">
-                          <span className={`text-[10px] font-bold px-1.5 py-0.5 rounded bg-slate-100 ${getRankColor(avg)}`}>
-                            {getRank(avg)}
-                          </span>
-                        </div>
-                      )}
-                    </div>
-                  );
-                })}
+      // 達成率計算
+      const getRate = (count: number) => 
+        stats.total > 0 ? Math.round((count / stats.total) * 100) : 0;
+
+      return (
+        <div 
+          key={lv} 
+          className={`p-3 rounded-2xl border transition-all ${
+            isNoData ? 'bg-slate-50 border-slate-100 opacity-50' : 'bg-white border-slate-100 shadow-sm hover:shadow-md'
+          }`}
+        >
+          {/* ヘッダー：レベルとランクバッジ */}
+          <div className="flex justify-between items-start mb-1">
+            <span className="text-[10px] font-black text-slate-400 tracking-tighter">LV {lv}</span>
+            {!isNoData && (
+              <span className={`text-[9px] font-bold px-1.5 py-0.5 rounded bg-slate-50 ${getRankColor(avg)}`}>
+                {getRank(avg)}
+              </span>
+            )}
+          </div>
+
+          {/* メイン：平均スコア */}
+          <p className={`text-lg font-black tracking-tighter leading-none mb-3 ${isNoData ? 'text-slate-200' : 'text-slate-800'}`}>
+            {isNoData ? '---' : 'AVG: '+avg.toLocaleString()}
+          </p>
+
+          {/* 詳細統計：コンパクトなグリッド表示 */}
+          {!isNoData && (
+            <div className="space-y-2 pt-2 border-t border-slate-50">
+              {/* AJC / AJ / SSS の横並び数値 */}
+              <div className="flex justify-between text-[10px] font-black">
+                <div className="text-center">
+                  <p className="text-slate-300 text-[8px] leading-tight">AJC</p>
+                  <p className="text-yellow-500">{stats.ajc}</p>
+                </div>
+                <div className="text-center border-x border-slate-50 px-2">
+                  <p className="text-slate-300 text-[8px] leading-tight">AJ</p>
+                  <p className="text-orange-500">{stats.aj}</p>
+                </div>
+                <div className="text-center">
+                  <p className="text-slate-300 text-[8px] leading-tight">SSS</p>
+                  <p className="text-rose-400">{stats.sss}</p>
+                </div>
               </div>
-            </section>
+
+              {/* 達成率を示す極細バー（AJ率を表示） */}
+              <div className="relative h-1 w-full bg-slate-50 rounded-full overflow-hidden">
+                {/* SSS率のベースバー */}
+                <div 
+                  className="absolute h-full bg-rose-200" 
+                  style={{ width: `${getRate(stats.sss)}%` }}
+                ></div>
+                {/* AJ率のメインバー */}
+                <div 
+                  className="absolute h-full bg-orange-400" 
+                  style={{ width: `${getRate(stats.aj)}%` }}
+                ></div>
+              </div>
+              
+              {/* 達成率のテキスト */}
+              <p className="text-[8px] text-slate-400 text-center font-bold">
+                TOTAL: {stats.total} <span className="ml-1 text-slate-300">({getRate(stats.aj)}% AJ)</span>
+              </p>
+            </div>
+          )}
+        </div>
+      );
+    })}
+  </div>
+</section>
           </div>
           </div>
           </div>
