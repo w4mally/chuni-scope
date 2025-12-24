@@ -64,9 +64,9 @@
     `;
 
 		document.getElementById('openAppBtn').onclick = () => {
-			const appUrl = "https://chuni-scope.vercel.app/?auto_import=true";
-			// const appUrl = 'http://localhost:5173/?auto_import=true';
-			window.name = JSON.stringify(data);
+			// const appUrl = "https://chuni-scope.vercel.app/?auto_import=true";
+            const appUrl = "http://localhost:5173/?auto_import=true";
+			window.name = encodeURIComponent(JSON.stringify(data));
 			location.href = appUrl;
 		};
 	};
