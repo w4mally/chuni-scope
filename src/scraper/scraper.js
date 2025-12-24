@@ -1,4 +1,9 @@
 (async () => {
+	if (window.location.hostname !== 'new.chunithm-net.com') {
+        alert('このブックマークレットは CHUNITHM-NET (new.chunithm-net.com) で実行してください。');
+        return;
+    }
+
 	const overlay = document.createElement('div');
 	overlay.style = `
     position: fixed; top: 30px; right: 30px; z-index: 10000;
@@ -42,7 +47,7 @@
 
 const finalize = async (data) => {
     const stElement = document.getElementById('st');
-    stElement.innerHTML = `<div style="padding:10px; background:#fff; font-weight:bold;">Saving data to cloud...</div>`;
+    stElement.innerText = "データ送信中";
 
     const baseUrl = "https://chuni-scope.vercel.app";
 
