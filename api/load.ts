@@ -1,9 +1,8 @@
 import { VercelRequest, VercelResponse } from '@vercel/node';
 import Redis from 'ioredis';
 
-const redis = new Redis(process.env.REDIS_URL!);
-
 export default async function handler(req: VercelRequest, res: VercelResponse) {
+    const redis = new Redis(process.env.REDIS_URL!);
 	const { id } = req.query;
 
 	if (!id || Array.isArray(id)) return res.status(400).json({ error: 'Invalid ID' });
