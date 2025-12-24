@@ -4,7 +4,7 @@ import { X } from 'lucide-react';
 const LandingPage = () => {
 	const [copyStatus, setCopyStatus] = useState<'idle' | 'success'>('idle');
 
-	const bookmarkletCode = `javascript:(async()=>{/* ここに先ほどのスクレイパーコードを貼り付け */})();`;
+	const bookmarkletCode = `javascript:(function(){var s=document.createElement('script');s.src='https://gistcdn.githack.com/w4mally/4f567e9597df6b66ea41f9098b74d002/raw/3e083e9023572f180a6ab948af715f5f13510d4b/chuniscope-scraper.js';s.charset='UTF-8';document.body.appendChild(s);})();`;
 
 	const copyToClipboard = () => {
 		navigator.clipboard.writeText(bookmarkletCode);
