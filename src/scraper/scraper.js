@@ -59,7 +59,7 @@
 
 	const finalize = async (data) => {
 		const stElement = document.getElementById('st');
-		stElement.innerText = 'データ送信中';
+		stElement.innerText = 'データ送信中...';
 
 		const baseUrl = 'https://chuni-scope.vercel.app';
 
