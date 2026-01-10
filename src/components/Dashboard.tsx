@@ -33,7 +33,12 @@ export const Dashboard = ({ data }: DashboardProps) => {
 							total={data.allCharts}
 							colorKey="yellow"
 						/>
-						<StatCard label="FullChain" count={data.player.fc} total={data.allCharts} colorKey="emerald" />
+						<StatCard
+							label="FullChain"
+							count={data.player.fc}
+							total={data.allCharts}
+							colorKey="emerald"
+						/>
 					</div>
 				</section>
 
