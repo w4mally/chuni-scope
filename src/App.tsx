@@ -5,11 +5,15 @@ import StatCard from './components/StatCard';
 import PlayerProfile from './features/PlayerProfile';
 import DifficultySummary from './features/DifficultySummary';
 import LandingPage from './features/LandingPage';
+import { ExportView } from './components/ExportView';
+import { LevelStatsExportView } from './components/LevelStatsExportView';
 
 function App() {
 	const contentRef = useRef<HTMLDivElement>(null);
 	const [data, setData] = useState<ChuniData | null>(null);
 	const [loading, setLoading] = useState(false);
+	const exportRef = useRef<HTMLDivElement>(null);
+	const levelStatsExportRef = useRef<HTMLDivElement>(null);
 
 	useEffect(() => {
 		const params = new URLSearchParams(window.location.search);
@@ -47,7 +51,12 @@ function App() {
 
 					{data && (
 						<div className="flex items-center gap-3">
-							<ShareButton targetRef={contentRef} />
+							<ShareButton targetRef={exportRef} fileName="chuni-all.png" label="全体を保存" />
+							<ShareButton
+								targetRef={levelStatsExportRef}
+								fileName="chuni-levels.png"
+								label="レベル別のみ"
+							/>
 
 							<button
 								onClick={() => setData(null)}
@@ -118,6 +127,18 @@ function App() {
 							</div>
 						</div>
 					</div>
+				)}
+			</div>
+			{/*画像用*/}
+			<div style={{ position: 'absolute', left: '-9999px', top: '-9999px' }}>
+				{data && (
+					<>
+						{/* 全体保存用 */}
+						<ExportView ref={exportRef} data={data} />
+
+						{/* レベル別保存用（ここに追加！） */}
+						<LevelStatsExportView ref={levelStatsExportRef} data={data} />
+					</>
 				)}
 			</div>
 		</div>

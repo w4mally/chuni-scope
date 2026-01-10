@@ -4,9 +4,10 @@ import { toPng } from 'html-to-image';
 interface ShareButtonProps {
     targetRef: React.RefObject<HTMLDivElement | null>;
     fileName?: string;
+    label?: string;
 }
 
-const ShareButton = ({ targetRef, fileName = 'chuni-scope-result.png' }: ShareButtonProps) => {
+const ShareButton = ({ targetRef, fileName, label = 'chuni-scope-result.png' }: ShareButtonProps) => {
     const [isLoading, setIsLoading] = useState(false);
 
     const handleShare = useCallback(async () => {
@@ -74,7 +75,7 @@ const ShareButton = ({ targetRef, fileName = 'chuni-scope-result.png' }: ShareBu
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-5 h-5">
                         <path strokeLinecap="round" strokeLinejoin="round" d="M3 16.5v2.25A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75V16.5M16.5 12 12 16.5m0 0L7.5 12m4.5 4.5V3" />
                     </svg>
-                    画像を保存
+                    {label}
                 </>
             )}
         </button>
