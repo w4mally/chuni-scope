@@ -62,6 +62,7 @@
 		stElement.innerText = 'データ送信中...';
 
 		const baseUrl = 'https://chuni-scope.vercel.app';
+		// const baseUrl = 'http://localhost:3000/';
 
 		try {
 			const response = await fetch(`${baseUrl}/api/save`, {
@@ -148,6 +149,7 @@
 	const levelStats = {};
 
 	for (let i = 0; i < levelLabels.length; i++) {
+		var played = true;
 		const label = levelLabels[i];
 		setStatus(`楽曲データを取得中... (Lv ${label})`);
 
@@ -187,6 +189,8 @@
 					levelStats[label].sss++;
 				}
 
+				if(score == 0) played = false;
+
 				const iconSrcs = Array.from(block.querySelectorAll('.play_musicdata_icon img')).map(
 					(img) => img.src
 				);
@@ -194,7 +198,7 @@
 				if (iconSrcs.some((s) => s.includes('icon_alljustice'))) levelStats[label].aj++;
 				if (iconSrcs.some((s) => s.includes('icon_fullchain'))) levelStats[label].fc++;
 
-				allScores.push({ title: '', difficulty, levelStr: label, score, isPlayed: true });
+				allScores.push({ title: '', difficulty, levelStr: label, score, isPlayed: played });
 			}
 		});
 	}

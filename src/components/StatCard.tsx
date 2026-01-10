@@ -1,11 +1,5 @@
-import { COLOR_VARIANTS, type ColorKey } from '../constants/colors';
-
-interface StatCardProps {
-	label: string;
-	count: number;
-	total: number;
-	colorKey: ColorKey;
-}
+import type { StatCardProps } from "../types";
+import { COLOR_VARIANTS } from "../constants/colors";
 
 const StatCard = ({ label, count, total, colorKey }: StatCardProps) => {
 	const safeCount = count ?? 0;

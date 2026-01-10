@@ -1,4 +1,5 @@
 export type Difficulty = 'MASTER' | 'ULTIMA';
+import { type ColorKey } from '../constants/colors';
 
 export interface ScoreData {
     title: string;
@@ -33,4 +34,11 @@ export interface ChuniData {
     player: PlayerInfo;
     scores: ScoreData[];
     levelStats: Record<string, LevelStat>;
+}
+
+export interface StatCardProps {
+	label: string;
+	count: number;
+	total: number;
+	colorKey: ColorKey;
 }

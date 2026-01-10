@@ -14,9 +14,9 @@ const LandingPage = () => {
 
 	const updateHistory = [
 		{
-			date: '2025.12.25',
-			version: 'v0.0.1β',
-			content: 'ベータ版を公開しました。',
+			date: '2026.1.10',
+			version: 'v1.0.0',
+			content: 'CHUNI SCOPEを公開しました。',
 		},
 	];
 
@@ -139,12 +139,12 @@ const LandingPage = () => {
 					<ul className="grid grid-cols-1 md:grid-cols-3 gap-8">
 						{[
 							{
-								title: 'シンプルだけど分かりやすい',
-								desc: 'ユーザーが実力の指標にすることの多いMASTER, ULTIMA譜面の記録に絞って集計するので直感的です。',
+								title: '軽量な動作',
+								desc: 'ユーザーが実力の指標にすることの多いMASTER, ULTIMA譜面の記録に絞って集計するので動作が軽いです。',
 							},
 							{
-								title: '詳しいプレイ統計',
-								desc: 'SSS/AJ/AJCの取得数をレベル別に集計。あなたの各レベルの埋め具合がすぐに分かります。',
+								title: 'シンプルな見た目',
+								desc: '必要十分な情報のみを表示するのでシンプルかつ分かりやすいです。',
 							},
 							{
 								title: 'セキュリティに配慮した設計',
