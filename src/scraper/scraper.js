@@ -59,10 +59,11 @@
 
 	const finalize = async (data) => {
 		const stElement = document.getElementById('st');
-		stElement.innerText = 'データ送信中...';``
+		stElement.innerText = 'データ送信中...';
+		``;
 
 		const baseUrl = 'https://chuni-scope.vercel.app';
-		// const baseUrl = 'http://localhost:3000/';
+		//const baseUrl = 'http://localhost:3000/';
 
 		try {
 			const response = await fetch(`${baseUrl}/api/save`, {
@@ -163,7 +164,10 @@
 		const doc = new DOMParser().parseFromString(await res.text(), 'text/html');
 		const blocks = doc.querySelectorAll('.musiclist_box');
 
-		levelStats[label] = { total: 0, sss: 0, sssPlus: 0, aj: 0, ajc: 0, fc: 0 };
+		levelStats[label] = {
+			master: { total: 0, sss: 0, sssPlus: 0, aj: 0, ajc: 0, fc: 0, lost: 0 },
+			ultima: { total: 0, sss: 0, sssPlus: 0, aj: 0, ajc: 0, fc: 0, lost: 0 },
+		};
 
 		blocks.forEach((block) => {
 			const difficulty = block.classList.contains('bg_master')
@@ -173,6 +177,8 @@
 					: null;
 			if (!difficulty) return;
 
+			const targetStats = levelStats[label][difficulty.toLowerCase()];
+
 			levelStats[label].total++;
 
 			const scoreRaw = block
@@ -181,19 +187,20 @@
 			const score = scoreRaw ? parseInt(scoreRaw) : 0;
 
 			if (score > 0) {
+				targetStats.lost += 1010000 - score;
 				if (score >= 1009000) {
-					levelStats[label].sssPlus++;
-					levelStats[label].sss++;
+					targetStats.sssPlus++;
+					targetStats.sss++;
 				} else if (score >= 1007500) {
-					levelStats[label].sss++;
+					targetStats.sss++;
 				}
 
 				const iconSrcs = Array.from(block.querySelectorAll('.play_musicdata_icon img')).map(
 					(img) => img.src
 				);
-				if (iconSrcs.some((s) => s.includes('icon_alljusticecritical'))) levelStats[label].ajc++;
-				if (iconSrcs.some((s) => s.includes('icon_alljustice'))) levelStats[label].aj++;
-				if (iconSrcs.some((s) => s.includes('icon_fullchain'))) levelStats[label].fc++;
+				if (iconSrcs.some((s) => s.includes('icon_alljusticecritical'))) targetStats.ajc++;
+				if (iconSrcs.some((s) => s.includes('icon_alljustice'))) targetStats.aj++;
+				if (iconSrcs.some((s) => s.includes('icon_fullchain'))) targetStats.fc++;
 
 				allScores.push({ title: '', difficulty, levelStr: label, score, isPlayed: true });
 			} else {
@@ -213,30 +220,56 @@
 		autoClose(500);
 		return;
 	}
-	const totalStats = Object.values(levelStats).reduce(
-		(acc, curr) => ({
-			sss: acc.sss + curr.sss,
-			sssPlus: acc.sssPlus + curr.sssPlus,
-			aj: acc.aj + curr.aj,
-			ajc: acc.ajc + curr.ajc,
-			fc: acc.fc + curr.fc,
-			total: acc.total + curr.total,
-		}),
-		{ sss: 0, sssPlus: 0, aj: 0, ajc: 0, fc: 0, total: 0 }
+	const initialStat = { total: 0, sss: 0, sssPlus: 0, aj: 0, ajc: 0, fc: 0, lost: 0 };
+	const totals = Object.values(levelStats).reduce(
+		(acc, curr) => {
+			acc.master.total += curr.master.total;
+			acc.master.sss += curr.master.sss;
+			acc.master.sssPlus += curr.master.sssPlus;
+			acc.master.aj += curr.master.aj;
+			acc.master.ajc += curr.master.ajc;
+			acc.master.fc += curr.master.fc;
+			acc.master.lost += curr.master.lost;
+
+			acc.ultima.total += curr.ultima.total;
+			acc.ultima.sss += curr.ultima.sss;
+			acc.ultima.sssPlus += curr.ultima.sssPlus;
+			acc.ultima.aj += curr.ultima.aj;
+			acc.ultima.ajc += curr.ultima.ajc;
+			acc.ultima.fc += curr.ultima.fc;
+			acc.ultima.lost += curr.ultima.lost;
+
+			return acc;
+		},
+		{
+			master: { ...initialStat },
+			ultima: { ...initialStat },
+		}
 	);
 
+	const grandTotal = {
+		sss: totals.master.sss + totals.ultima.sss,
+		sssPlus: totals.master.sssPlus + totals.ultima.sssPlus,
+		aj: totals.master.aj + totals.ultima.aj,
+		ajc: totals.master.ajc + totals.ultima.ajc,
+		fc: totals.master.fc + totals.ultima.fc,
+		total: totals.master.total + totals.ultima.total,
+	};
+
 	const result = {
-		allCharts: totalStats.total,
+		allCharts: grandTotal.total,
 		player: {
 			...player,
-			sss: totalStats.sss,
-			sssPlus: totalStats.sssPlus,
-			aj: totalStats.aj,
-			ajc: totalStats.ajc,
-			fc: totalStats.fc,
+			// ここには従来の「合算値」を入れておくと、プロフィール表示が壊れません
+			sss: grandTotal.sss,
+			sssPlus: grandTotal.sssPlus,
+			aj: grandTotal.aj,
+			ajc: grandTotal.ajc,
+			fc: grandTotal.fc,
 		},
 		levelStats,
 		scores: allScores,
+		totals: totals,
 	};
 
 	finalize(result);

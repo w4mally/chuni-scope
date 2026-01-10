@@ -19,24 +19,44 @@ export const Dashboard = ({ data }: DashboardProps) => {
 						All Record Statistics (MASTER & ULTIMA)
 					</h3>
 					<div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-3 md:gap-4">
-						<StatCard label="SSS" count={data.player.sss} total={data.allCharts} colorKey="rose" />
 						<StatCard
-							label="SSS+"
-							count={data.player.sssPlus}
-							total={data.allCharts}
+							label="SSS"
+							mascount={data.totals.master.sss}
+							mastotal={data.totals.master.total}
+							ultcount={data.totals.ultima.sss}
+							ulttotal={data.totals.ultima.total}
+							colorKey="rose"
+						/>
+						<StatCard
+							label="SSS"
+							mascount={data.totals.master.sssPlus}
+							mastotal={data.totals.master.total}
+							ultcount={data.totals.ultima.sssPlus}
+							ulttotal={data.totals.ultima.total}
 							colorKey="red"
 						/>
-						<StatCard label="AJ" count={data.player.aj} total={data.allCharts} colorKey="orange" />
+						<StatCard
+							label="AJ"
+							mascount={data.totals.master.aj}
+							mastotal={data.totals.master.total}
+							ultcount={data.totals.ultima.aj}
+							ulttotal={data.totals.ultima.total}
+							colorKey="orange"
+						/>
 						<StatCard
 							label="AJC"
-							count={data.player.ajc}
-							total={data.allCharts}
+							mascount={data.totals.master.ajc}
+							mastotal={data.totals.master.total}
+							ultcount={data.totals.ultima.ajc}
+							ulttotal={data.totals.ultima.total}
 							colorKey="yellow"
 						/>
 						<StatCard
-							label="FullChain"
-							count={data.player.fc}
-							total={data.allCharts}
+							label="FULLCHAIN"
+							mascount={data.totals.master.fc}
+							mastotal={data.totals.master.total}
+							ultcount={data.totals.ultima.fc}
+							ulttotal={data.totals.ultima.total}
 							colorKey="emerald"
 						/>
 					</div>
