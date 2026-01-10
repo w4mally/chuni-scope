@@ -48,8 +48,6 @@ const ShareButton = ({ targetRef, fileName = 'chuniscope-result.png', label = 'ç
             if (navigator.canShare && navigator.canShare({ files: [file] })) {
                 await navigator.share({
                     files: [file],
-                    title: 'CHUNI SCOPE',
-                    text: '#chuni_scope',
                 });
             } else {
                 const link = document.createElement('a');
