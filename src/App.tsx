@@ -7,12 +7,14 @@ import DifficultySummary from './features/DifficultySummary';
 import LandingPage from './features/LandingPage';
 import { ExportView } from './components/ExportView';
 import { LevelStatsExportView } from './components/LevelStatsExportView';
+import { HowToUse } from './components/HowtoUse.tsx';
 
 function App() {
 	const contentRef = useRef<HTMLDivElement>(null);
 	const [data, setData] = useState<ChuniData | null>(null);
 	const [loading, setLoading] = useState(false);
 	const [isMenuOpen, setIsMenuOpen] = useState(false);
+	const [showHowTo, setShowHowTo] = useState(false);
 	const exportRef = useRef<HTMLDivElement>(null);
 	const levelStatsExportRef = useRef<HTMLDivElement>(null);
 
@@ -38,6 +40,10 @@ function App() {
 				.finally(() => setLoading(false));
 		}
 	}, []);
+
+	if (showHowTo) {
+        return <HowToUse onBack={() => setShowHowTo(false)} />;
+    }
 
 	if (loading) {
 		return <div className="p-10 text-center font-bold">Now Loading...</div>;
@@ -79,7 +85,7 @@ function App() {
 			</nav>
 
 			<div className="max-w-5xl mx-auto px-4">
-				{!data && <LandingPage />}
+				{!data && <LandingPage onShowHowTo={() => setShowHowTo(true)}/>}
 
 				{data && (
 					<div className="space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-700">
