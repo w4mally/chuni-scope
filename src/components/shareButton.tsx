@@ -37,7 +37,7 @@ const ShareButton = ({ targetRef, fileName, label = 'chuni-scope-result.png' }: 
             });
 
             const link = document.createElement('a');
-            link.download = fileName;
+            link.download = fileName || 'chuni-scope-result.png'
             link.href = dataUrl;
             link.click();
         } catch (err) {
