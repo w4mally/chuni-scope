@@ -39,11 +39,11 @@ function App() {
 	}, []);
 
 	if (loading) {
-		return <div className="p-10 text-center font-bold">Loading data from server...</div>;
+		return <div className="p-10 text-center font-bold">Now Loading...</div>;
 	}
 
 	return (
-		<div className="min-h-screen bg-slate-50 text-slate-900 font-sans pb-12">
+		<div className="min-h-screen bg-slate-50 text-slate-900 font-sans pb-12 overflow-x-hidden">
 			{/* ナビゲーションバー */}
 			<nav className="bg-white border-b border-slate-200 py-4 mb-8 sticky top-0 z-50 shadow-sm">
 				<div className="max-w-5xl mx-auto px-4 flex justify-between items-center">
@@ -51,11 +51,14 @@ function App() {
 
 					{data && (
 						<div className="flex items-center gap-3">
-							<ShareButton targetRef={exportRef} fileName="chuni-all.png" label="全体を保存" />
+							<ShareButton 
+								targetRef={exportRef}
+								fileName="chuni-all.png"
+								label="画像にして保存" />
 							<ShareButton
 								targetRef={levelStatsExportRef}
 								fileName="chuni-levels.png"
-								label="レベル別のみ"
+								label="レベル別のみ保存"
 							/>
 
 							<button
