@@ -1,14 +1,12 @@
-import { useState } from 'react';
-import type { ChuniData } from '../types';
 import ShareButton from './shareButton';
 
 interface HeaderShareButtonProps {
 	exportRef: React.RefObject<HTMLDivElement | null>;
 	levelStatsExportRef: React.RefObject<HTMLDivElement | null>;
+	onReset: () => void;
 }
 
-export const HeaderShareButton = ({ exportRef, levelStatsExportRef }: HeaderShareButtonProps) => {
-	const [, setData] = useState<ChuniData | null>(null);
+export const HeaderShareButton = ({ exportRef, levelStatsExportRef, onReset }: HeaderShareButtonProps) => {
 	return (
 		<div className="flex items-center gap-2">
 			<div className="hidden md:flex items-center gap-2">
@@ -20,7 +18,7 @@ export const HeaderShareButton = ({ exportRef, levelStatsExportRef }: HeaderShar
 				/>
 			</div>
 			<button
-				onClick={() => setData(null)}
+				onClick={onReset}
 				className="text-xs bg-slate-100 hover:bg-slate-200 text-slate-600 px-3 py-1.5 rounded-full transition"
 			>
 				トップに戻る

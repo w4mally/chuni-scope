@@ -55,7 +55,11 @@ function App() {
 				<div className="max-w-5xl mx-auto px-4 flex justify-between items-center">
 					<h1 className="text-xl font-black tracking-tighter text-blue-600">CHUNI SCOPE</h1>
 					{data && (
-						<HeaderShareButton exportRef={exportRef} levelStatsExportRef={levelStatsExportRef} />
+						<HeaderShareButton
+							exportRef={exportRef}
+							levelStatsExportRef={levelStatsExportRef}
+							onReset={() => setData(null)}
+						/>
 					)}
 				</div>
 			</nav>
@@ -81,7 +85,7 @@ function App() {
 			{data && (
 				<MobileShareButton exportRef={exportRef} levelStatsExportRef={levelStatsExportRef} />
 			)}
-			
+
 			{/*画像用*/}
 			<div style={{ position: 'absolute', left: '-9999px', top: '-9999px' }}>
 				{data && (
