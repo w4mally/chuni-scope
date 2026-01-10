@@ -52,13 +52,14 @@ const ShareButton = ({ targetRef, fileName, label = 'chuni-scope-result.png' }: 
         <button
             onClick={handleShare}
             disabled={isLoading}
-            className="flex items-center gap-2 px-5 py-2.5 rounded-full font-bold text-sm shadow-md transition-all active:scale-95 hover:shadow-lg"
+            // className="flex items-center gap-2 px-5 py-2.5 rounded-full font-bold text-sm shadow-md transition-all active:scale-95 hover:shadow-lg"
+            className="flex items-center gap-2 px-3 md:px-5 py-2 md:py-2.5 rounded-full font-bold text-xs md:text-sm shadow-md transition-all active:scale-95 hover:shadow-lg whitespace-nowrap"
             style={{
                 backgroundColor: isLoading ? '#d1d5db' : '#2563eb',
                 color: '#ffffff',
                 cursor: isLoading ? 'not-allowed' : 'pointer',
                 border: 'none',
-                minWidth: '150px',
+                // minWidth: '150px',
                 justifyContent: 'center'
             }}
         >
