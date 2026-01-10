@@ -9,7 +9,7 @@
     position: fixed; top: 30px; right: 30px; z-index: 10000;
     background: rgba(15, 23, 42, 0.95); color: white; 
     padding: 36px; border-radius: 28px; font-family: 'Inter', sans-serif;
-    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5); 
+    box-shadow: 0 25px 50px -12px rgba(46, 37, 37, 0.5); 
     width: 380px;
     backdrop-filter: blur(12px); border: 1px solid rgba(255,255,255,0.15);
     display: flex; flex-direction: column; gap: 24px;
@@ -59,7 +59,7 @@
 
 	const finalize = async (data) => {
 		const stElement = document.getElementById('st');
-		stElement.innerText = 'データ送信中...';
+		stElement.innerText = 'データ送信中...';``
 
 		const baseUrl = 'https://chuni-scope.vercel.app';
 		// const baseUrl = 'http://localhost:3000/';
@@ -149,7 +149,6 @@
 	const levelStats = {};
 
 	for (let i = 0; i < levelLabels.length; i++) {
-		var played = true;
 		const label = levelLabels[i];
 		setStatus(`楽曲データを取得中... (Lv ${label})`);
 
@@ -189,8 +188,6 @@
 					levelStats[label].sss++;
 				}
 
-				if(score == 0) played = false;
-
 				const iconSrcs = Array.from(block.querySelectorAll('.play_musicdata_icon img')).map(
 					(img) => img.src
 				);
@@ -198,7 +195,9 @@
 				if (iconSrcs.some((s) => s.includes('icon_alljustice'))) levelStats[label].aj++;
 				if (iconSrcs.some((s) => s.includes('icon_fullchain'))) levelStats[label].fc++;
 
-				allScores.push({ title: '', difficulty, levelStr: label, score, isPlayed: played });
+				allScores.push({ title: '', difficulty, levelStr: label, score, isPlayed: true });
+			} else {
+				allScores.push({ title: '', difficulty, levelStr: label, score, isPlayed: false });
 			}
 		});
 	}
