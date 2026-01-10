@@ -71,21 +71,41 @@ export const ExportView = forwardRef<HTMLDivElement, ExportViewProps>(({ data },
 					</h3>
 					{/* grid-cols-1 md:grid-cols-5 ではなく、常に grid-cols-5 */}
 					<div className="grid grid-cols-5 gap-6">
-						<StatCard label="SSS" count={data.player.sss} total={data.allCharts} colorKey="rose" />
+						<StatCard
+							label="SSS"
+							count={data.player.sss}
+							total={data.allCharts}
+							colorKey="rose"
+							isExport={true}
+						/>
 						<StatCard
 							label="SSS+"
 							count={data.player.sssPlus}
 							total={data.allCharts}
 							colorKey="red"
+							isExport={true}
 						/>
-						<StatCard label="AJ" count={data.player.aj} total={data.allCharts} colorKey="orange" />
+						<StatCard
+							label="AJ"
+							count={data.player.aj}
+							total={data.allCharts}
+							colorKey="orange"
+							isExport={true}
+						/>
 						<StatCard
 							label="AJC"
 							count={data.player.ajc}
 							total={data.allCharts}
 							colorKey="yellow"
+							isExport={true}
 						/>
-						<StatCard label="FC" count={data.player.fc} total={data.allCharts} colorKey="emerald" />
+						<StatCard
+							label="FC"
+							count={data.player.fc}
+							total={data.allCharts}
+							colorKey="emerald"
+							isExport={true}
+						/>
 					</div>
 				</div>
 
