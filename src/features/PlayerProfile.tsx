@@ -28,14 +28,6 @@ const PlayerProfile = ({ data }: PlayerProfileProps) => {
 							{data.player.name}
 						</h2>
 					</div>
-					{/* レベルを右上に控えめに配置 */}
-					<div className="text-right">
-						<p className={labelStyle}>Level</p>
-						<p className="text-xl font-bold">
-							☆{data.player.reborn} <span className="text-sm opacity-80">Lv.</span>
-							{data.player.level}
-						</p>
-					</div>
 				</div>
 
 				{/* 下段：主要ステータス横並び（スマホでは縦） */}

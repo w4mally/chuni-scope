@@ -1,14 +1,20 @@
 import type { StatCardProps } from "../types";
 import { COLOR_VARIANTS } from "../constants/colors";
 
-const StatCard = ({ label, count, total, colorKey }: StatCardProps) => {
+const StatCard = ({ label, count, total, colorKey, isExport = false }: StatCardProps) => {
 	const safeCount = count ?? 0;
 	const percentage = total > 0 ? ((safeCount / total) * 100).toFixed(2) : '0.00';
 
 	const colors = COLOR_VARIANTS[colorKey];
 
+	const containerStyle = isExport
+        // 保存用：影なし (shadow-none)、枠線あり (border-2)
+        ? "bg-white rounded-2xl p-6 shadow-none border-2 border-slate-100 flex flex-col items-center justify-center"
+        // 通常用：影あり (shadow-md)、枠線なし（元のデザイン）
+        : "bg-white p-3 md:p-4 rounded-2xl border border-slate-100 shadow-sm text-center flex flex-col justify-between min-w-0 h-full";
+
 	return (
-		<div className="bg-white p-3 md:p-4 rounded-2xl border border-slate-100 shadow-sm text-center flex flex-col justify-between min-w-0 h-full">
+		<div className={containerStyle}>
 			<p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-1 truncate">
 				{label}
 			</p>

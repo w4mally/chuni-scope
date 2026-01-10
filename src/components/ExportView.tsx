@@ -33,7 +33,7 @@ export const ExportView = forwardRef<HTMLDivElement, ExportViewProps>(({ data },
 				</div>
 
 				{/* === 1. プロフィール (横並び固定) === */}
-				<div className="bg-white rounded-3xl shadow-lg p-8 border border-slate-100 flex items-center justify-between">
+				<div className="bg-white rounded-3xl shadow-none border-2 border-slate-200 p-8 border border-slate-100 flex items-center justify-between">
 					<div>
 						<div className="text-sm font-bold text-slate-400 tracking-widest mb-1">PLAYER</div>
 						<div className="flex items-baseline gap-4">
@@ -112,7 +112,7 @@ export const ExportView = forwardRef<HTMLDivElement, ExportViewProps>(({ data },
 									className={`p-3 rounded-2xl border transition-all ${
 										isNoData
 											? 'bg-slate-50 border-slate-100 opacity-50'
-											: 'bg-white border-slate-100 shadow-sm hover:shadow-md'
+											: 'bg-white border-slate-100 shadow-none border-2 hover:shadow-md'
 									}`}
 								>
 									<div className="flex justify-between items-start mb-1">
