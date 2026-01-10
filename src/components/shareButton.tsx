@@ -1,6 +1,6 @@
 import { useState, useCallback } from 'react';
 import { toPng } from 'html-to-image';
-import { PiDownloadSimpleBold } from "react-icons/pi";
+import { RiShare2Line } from 'react-icons/ri';
 
 interface ShareButtonProps {
     targetRef: React.RefObject<HTMLDivElement | null>;
@@ -8,8 +8,14 @@ interface ShareButtonProps {
     label?: string;
 }
 
-const ShareButton = ({ targetRef, fileName, label = 'chuni-scope-result.png' }: ShareButtonProps) => {
+const ShareButton = ({ targetRef, fileName = 'chuniscope-result.png', label = '画像を保存' }: ShareButtonProps) => {
     const [isLoading, setIsLoading] = useState(false);
+
+    const dataUrlToFile = async (dataUrl: string, filename: string): Promise<File> => {
+        const res = await fetch(dataUrl);
+        const blob = await res.blob();
+        return new File([blob], filename, { type: 'image/png' });
+    };
 
     const handleShare = useCallback(async () => {
         if (!targetRef.current) return;
@@ -37,10 +43,20 @@ const ShareButton = ({ targetRef, fileName, label = 'chuni-scope-result.png' }: 
                 skipAutoScale: true,
             });
 
-            const link = document.createElement('a');
-            link.download = fileName || 'chuni-scope-result.png'
-            link.href = dataUrl;
-            link.click();
+            const file = await dataUrlToFile(dataUrl, fileName);
+
+            if (navigator.canShare && navigator.canShare({ files: [file] })) {
+                await navigator.share({
+                    files: [file],
+                    title: 'CHUNI SCOPE',
+                    text: '#chuni_scope',
+                });
+            } else {
+                const link = document.createElement('a');
+                link.download = fileName;
+                link.href = dataUrl;
+                link.click();
+            }
         } catch (err) {
             console.error("画像生成エラー:", err);
             alert("画像の生成に失敗しました。");
@@ -74,7 +90,7 @@ const ShareButton = ({ targetRef, fileName, label = 'chuni-scope-result.png' }: 
                 </>
             ) : (
                 <>
-                <PiDownloadSimpleBold />
+                <RiShare2Line />
                     {label}
                 </>
             )}

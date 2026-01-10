@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import ShareButton from './shareButton';
-import { PiDownloadSimpleBold } from "react-icons/pi";
+import { RiShare2Line } from 'react-icons/ri';
 import { IconContext } from 'react-icons';
 
 interface MobileShareButtonProps {
@@ -71,7 +71,7 @@ export const MobileShareButton = ({ exportRef, levelStatsExportRef }: MobileShar
 						// 保存(共有)アイコン
 						<div className="relative">
                             <IconContext.Provider value={{ size: '1.7em' }}>
-                                <PiDownloadSimpleBold />
+                                <RiShare2Line />
                             </IconContext.Provider>
 						</div>
 					)}
