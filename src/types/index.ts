@@ -41,4 +41,5 @@ export interface StatCardProps {
 	count: number;
 	total: number;
 	colorKey: ColorKey;
+    isExport?: boolean;
 }

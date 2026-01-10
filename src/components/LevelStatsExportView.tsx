@@ -48,7 +48,7 @@ export const LevelStatsExportView = forwardRef<HTMLDivElement, LevelStatsExportV
 									className={`p-3 rounded-2xl border transition-all ${
 										isNoData
 											? 'bg-slate-50 border-slate-100 opacity-50'
-											: 'bg-white border-slate-100 shadow-sm hover:shadow-md'
+											: 'bg-white border-slate-100 shadow-none border-2'
 									}`}
 								>
 									<div className="flex justify-between items-start mb-1">
