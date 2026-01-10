@@ -32,7 +32,7 @@ export const MobileShareButton = ({ exportRef, levelStatsExportRef }: MobileShar
 								<ShareButton
 									targetRef={levelStatsExportRef}
 									fileName="chuni-level.png"
-									label="保存"
+									label="共有"
 								/>
 							</div>
 						</div>
@@ -40,10 +40,10 @@ export const MobileShareButton = ({ exportRef, levelStatsExportRef }: MobileShar
 						{/* 全体を保存 */}
 						<div className="flex items-center gap-2 justify-end">
 							<span className="text-xs font-bold text-white bg-black/50 px-2 py-1 rounded backdrop-blur-sm shadow-sm">
-								全体を保存
+								全体
 							</span>
 							<div className="shadow-xl rounded-full">
-								<ShareButton targetRef={exportRef} fileName="chuni-all.png" label="保存" />
+								<ShareButton targetRef={exportRef} fileName="chuni-all.png" label="共有" />
 							</div>
 						</div>
 					</div>
@@ -70,9 +70,9 @@ export const MobileShareButton = ({ exportRef, levelStatsExportRef }: MobileShar
 					) : (
 						// 保存(共有)アイコン
 						<div className="relative">
-                            <IconContext.Provider value={{ size: '1.7em' }}>
-                                <RiShare2Line />
-                            </IconContext.Provider>
+							<IconContext.Provider value={{ size: '1.7em' }}>
+								<RiShare2Line />
+							</IconContext.Provider>
 						</div>
 					)}
 				</button>

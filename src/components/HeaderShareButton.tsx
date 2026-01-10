@@ -10,11 +10,11 @@ export const HeaderShareButton = ({ exportRef, levelStatsExportRef, onReset }: H
 	return (
 		<div className="flex items-center gap-2">
 			<div className="hidden md:flex items-center gap-2">
-				<ShareButton targetRef={exportRef} fileName="chuni-all.png" label="画像を保存" />
+				<ShareButton targetRef={exportRef} fileName="chuni-all.png" label="画像を共有" />
 				<ShareButton
 					targetRef={levelStatsExportRef}
 					fileName="chuni-level.png"
-					label="レベル別のみ"
+					label="レベル別のみ共有"
 				/>
 			</div>
 			<button
