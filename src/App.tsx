@@ -54,11 +54,11 @@ function App() {
 							<ShareButton 
 								targetRef={exportRef}
 								fileName="chuni-all.png"
-								label="画像にして保存" />
+								label="画像を保存" />
 							<ShareButton
 								targetRef={levelStatsExportRef}
 								fileName="chuni-levels.png"
-								label="レベル別のみ保存"
+								label="Lv別のみ保存"
 							/>
 
 							<button
@@ -77,7 +77,7 @@ function App() {
 
 				{data && (
 					<div className="space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-700">
-						<div ref={contentRef} className="bg-slate-50 p-4 -m-4 rounded-xl">
+						<div ref={contentRef} className="bg-slate-50 p-4 rounded-xl w-full">
 							<div className="space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-700">
 								<PlayerProfile data={data} />
 
