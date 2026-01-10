@@ -62,6 +62,7 @@
 		stElement.innerText = 'データ送信中...';
 
 		const baseUrl = 'https://chuni-scope.vercel.app';
+		// const baseUrl = 'http://localhost:3000/';
 
 		try {
 			const response = await fetch(`${baseUrl}/api/save`, {
