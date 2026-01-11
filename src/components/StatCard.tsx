@@ -1,7 +1,19 @@
-import type { StatCardProps } from "../types";
+import type { ColorKey } from "../constants/colors";
 import { COLOR_VARIANTS } from "../constants/colors";
 
-const StatCard = ({ label, count, total, colorKey, isExport = false }: StatCardProps) => {
+export interface StatCardProps {
+	label: string;
+	mascount: number;
+	mastotal: number;
+	ultcount: number;
+	ulttotal: number;
+	colorKey: ColorKey;
+    isExport?: boolean;
+}
+
+const StatCard = ({ label, mascount, mastotal, ultcount, ulttotal, colorKey, isExport = false }: StatCardProps) => {
+	const count = mascount + ultcount;
+	const total = mastotal + ulttotal;
 	const safeCount = count ?? 0;
 	const percentage = total > 0 ? ((safeCount / total) * 100).toFixed(2) : '0.00';
 
@@ -33,6 +45,12 @@ const StatCard = ({ label, count, total, colorKey, isExport = false }: StatCardP
 						style={{ width: `${percentage}%` }}
 					></div>
 				</div>
+			</div>
+			<div className="text-[10px] text-slate-400 mt-2 font-medium">
+				MASTER: {mascount} / {mastotal}
+			</div>
+			<div className="text-[10px] text-slate-400 mt-1 font-medium">
+				ULTIMA: {ultcount} / {ulttotal}
 			</div>
 		</div>
 	);

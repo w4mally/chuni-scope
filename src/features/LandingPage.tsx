@@ -1,7 +1,10 @@
 import { useState } from 'react';
-import { X } from 'lucide-react';
+import { RiTwitterXFill } from "react-icons/ri";
+interface LandingViewProps {
+	onShowHowTo: () => void;
+}
 
-const LandingPage = () => {
+export const LandingPage = ({ onShowHowTo }: LandingViewProps) => {
 	const [copyStatus, setCopyStatus] = useState<'idle' | 'success'>('idle');
 
 	const bookmarkletCode = `javascript:(function(){var s=document.createElement('script');s.src='https://gist.githack.com/w4mally/4f567e9597df6b66ea41f9098b74d002/raw/chuniscope-scraper.js';s.charset='UTF-8';document.body.appendChild(s);})();`;
@@ -27,10 +30,11 @@ const LandingPage = () => {
 					CHUNI SCOPE
 				</h2>
 				<p className="text-xl text-slate-500 max-w-2xl mx-auto font-medium leading-relaxed">
-					CHUNI SCOPEはログイン不要、ワンタッチであなたのCHUNITHMの実力を
+					CHUNI SCOPEはワンタッチであなたのCHUNITHMの実力を
 					<br />
 					可視化する非公式スコアツールです。
 				</p>
+
 				<div className="flex justify-center pt-2">
 					<a
 						href="https://x.com/Alc5_"
@@ -38,12 +42,12 @@ const LandingPage = () => {
 						rel="noopener noreferrer"
 						className="group flex items-center gap-2 px-4 py-2 bg-white border border-slate-200 rounded-full text-slate-500 hover:text-blue-600 hover:border-blue-200 hover:bg-blue-50 transition-all duration-300 shadow-sm"
 					>
-						<X
+						<RiTwitterXFill
 							size={16}
 							fill="currentColor"
-							className="group-hover:scale-110 transition-transform"
+							className="text-black group-hover:scale-110 transition-transform"
 						/>
-						<span className="text-sm font-bold">Developed by @Alc5_</span>
+						<span className="text-black font-bold">Developed by @Alc5_</span>
 					</a>
 				</div>
 			</header>
@@ -119,6 +123,28 @@ const LandingPage = () => {
 							</button>
 						</div>
 					</div>
+					<div className="mt-8 flex justify-center">
+					<button
+						onClick={onShowHowTo}
+						className="w-full bg-white border-2 border-slate-200 text-slate-700 font-bold py-4 rounded-2xl shadow-sm hover:border-blue-400 hover:text-blue-600 hover:shadow-md transition-all active:scale-95 flex items-center justify-center gap-2"
+					>
+						<svg
+							xmlns="http://www.w3.org/2000/svg"
+							fill="none"
+							viewBox="0 0 24 24"
+							strokeWidth={2}
+							stroke="currentColor"
+							className="w-5 h-5"
+						>
+							<path
+								strokeLinecap="round"
+								strokeLinejoin="round"
+								d="M9.879 7.519c1.171-1.025 3.071-1.025 4.242 0 1.172 1.025 1.172 2.687 0 3.712-.203.179-.43.326-.67.442-.745.361-1.45.999-1.45 1.827v.75M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-9 5.25h.008v.008H12v-.008z"
+							/>
+						</svg>
+						詳しい使い方はこちら
+					</button>
+				</div>
 				</div>
 
 				{/* 装飾用背景 */}
@@ -143,7 +169,7 @@ const LandingPage = () => {
 								desc: 'ユーザーが実力の指標にすることの多いMASTER, ULTIMA譜面の記録に絞って集計するので動作が軽いです。',
 							},
 							{
-								title: 'シンプルな見た目',
+								title: 'シンプルな構成',
 								desc: '必要十分な情報のみを表示するのでシンプルかつ分かりやすいです。',
 							},
 							{
@@ -181,7 +207,7 @@ const LandingPage = () => {
 			{/* 更新履歴リスト本体 */}
 			<div className="bg-white/5 backdrop-blur-sm border border-white/10 rounded-3xl p-6 md:p-8">
 				<div className="relative border-l border-white/10 ml-3 space-y-8 py-2">
-							<h2>更新履歴</h2>
+					<h2>更新履歴</h2>
 					{updateHistory.map((item, index) => (
 						<div key={index} className="relative pl-8 group">
 							<div className="flex flex-col sm:flex-row sm:items-baseline gap-1 sm:gap-4 mb-1">

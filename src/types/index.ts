@@ -1,5 +1,4 @@
 export type Difficulty = 'MASTER' | 'ULTIMA';
-import { type ColorKey } from '../constants/colors';
 
 export interface ScoreData {
     title: string;
@@ -22,24 +21,28 @@ export interface PlayerInfo {
     fc : number
 }
 
-export interface LevelStat {
+export interface DifficultyStat {
     total: number;
     sss: number;
+    sssPlus: number;
     aj: number;
     ajc: number;
+    fc: number;
+    lost: number;
+}
+
+export interface LevelData {
+    master: DifficultyStat;
+    ultima: DifficultyStat;
 }
 
 export interface ChuniData {
     allCharts: number
     player: PlayerInfo;
+    levelStats: Record<string, LevelData>;
     scores: ScoreData[];
-    levelStats: Record<string, LevelStat>;
-}
-
-export interface StatCardProps {
-	label: string;
-	count: number;
-	total: number;
-	colorKey: ColorKey;
-    isExport?: boolean;
+    totals: {
+        master: DifficultyStat;
+        ultima: DifficultyStat;
+    }
 }

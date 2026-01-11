@@ -1,5 +1,6 @@
 import { useState, useCallback } from 'react';
 import { toPng } from 'html-to-image';
+import { RiShare2Line } from 'react-icons/ri';
 
 interface ShareButtonProps {
     targetRef: React.RefObject<HTMLDivElement | null>;
@@ -7,8 +8,14 @@ interface ShareButtonProps {
     label?: string;
 }
 
-const ShareButton = ({ targetRef, fileName, label = 'chuni-scope-result.png' }: ShareButtonProps) => {
+const ShareButton = ({ targetRef, fileName = 'chuniscope-result.png', label = '画像を保存' }: ShareButtonProps) => {
     const [isLoading, setIsLoading] = useState(false);
+
+    const dataUrlToFile = async (dataUrl: string, filename: string): Promise<File> => {
+        const res = await fetch(dataUrl);
+        const blob = await res.blob();
+        return new File([blob], filename, { type: 'image/png' });
+    };
 
     const handleShare = useCallback(async () => {
         if (!targetRef.current) return;
@@ -36,10 +43,18 @@ const ShareButton = ({ targetRef, fileName, label = 'chuni-scope-result.png' }: 
                 skipAutoScale: true,
             });
 
-            const link = document.createElement('a');
-            link.download = fileName || 'chuni-scope-result.png'
-            link.href = dataUrl;
-            link.click();
+            const file = await dataUrlToFile(dataUrl, fileName);
+
+            if (navigator.canShare && navigator.canShare({ files: [file] })) {
+                await navigator.share({
+                    files: [file],
+                });
+            } else {
+                const link = document.createElement('a');
+                link.download = fileName;
+                link.href = dataUrl;
+                link.click();
+            }
         } catch (err) {
             console.error("画像生成エラー:", err);
             alert("画像の生成に失敗しました。");
@@ -73,9 +88,7 @@ const ShareButton = ({ targetRef, fileName, label = 'chuni-scope-result.png' }: 
                 </>
             ) : (
                 <>
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-5 h-5">
-                        <path strokeLinecap="round" strokeLinejoin="round" d="M3 16.5v2.25A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75V16.5M16.5 12 12 16.5m0 0L7.5 12m4.5 4.5V3" />
-                    </svg>
+                <RiShare2Line />
                     {label}
                 </>
             )}

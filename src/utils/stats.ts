@@ -9,6 +9,14 @@ export const calculateAverageForLevel = (scores: ScoreData[], level: string) => 
     return Math.floor(sum / targetScores.length);
 };
 
+export const calculateAverageForLevelAll = (scores: ScoreData[], level: string) => {
+    const targetScores = scores.filter(s => s.levelStr === level);
+    if (targetScores.length === 0) return 0;
+
+    const sum = targetScores.reduce((acc, curr) => acc + curr.score, 0);
+    return Math.floor(sum / targetScores.length);
+};
+
 // プレイ率を計算する
 export const calculatePlayRate = (scores: ScoreData[]) => {
     if (scores.length === 0) return 0;
