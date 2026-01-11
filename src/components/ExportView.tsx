@@ -77,7 +77,7 @@ export const ExportView = forwardRef<HTMLDivElement, ExportViewProps>(({ data },
 							isExport={true}
 						/>
 						<StatCard
-							label="SSS"
+							label="SSS+"
 							mascount={data.totals.master.sssPlus}
 							mastotal={data.totals.master.total}
 							ultcount={data.totals.ultima.sssPlus}
