@@ -20,6 +20,7 @@ const DifficultySummary = ({ data , isExport = false}: DifficultySummaryProps) =
 			<div className = {Style}>
 				{levels.map((lv) => {
 					const avg = calculateAverageForLevel(data.scores, lv);
+					// const avgall = calculateAverageForLevelAll(data.scores, lv);
 					const stats = data.levelStats[lv] || { total: 0, sss: 0, aj: 0, ajc: 0 };
 					const isNoData = (stats.master.total + stats.ultima.total) === 0;
 
@@ -51,7 +52,7 @@ const DifficultySummary = ({ data , isExport = false}: DifficultySummaryProps) =
 							<p
 								className={`text-lg font-black tracking-tighter leading-none mb-3 ${isNoData ? 'text-slate-200' : 'text-slate-800'}`}
 							>
-								{isNoData ? '---' : 'AVG: ' + avg.toLocaleString()}
+								{isNoData ? '---' : 'AVG : ' + avg.toLocaleString()}<br/>
 							</p>
 
 							{!isNoData && (
@@ -80,11 +81,18 @@ const DifficultySummary = ({ data , isExport = false}: DifficultySummaryProps) =
 											className="absolute h-full bg-orange-400"
 											style={{ width: `${getRate(stats.master.aj + stats.ultima.aj)}%` }}
 										></div>
+										<div
+											className="absolute h-full bg-yellow-400"
+											style={{ width: `${getRate(stats.master.ajc + stats.ultima.ajc)}%` }}
+										></div>
 									</div>
 
 									<p className="text-[8px] text-slate-400 text-center font-bold">
 										TOTAL: {stats.master.total + stats.ultima.total}{' '}
-										<span className="ml-1 text-slate-300">({getRate(stats.master.aj + stats.ultima.aj)}% AJ)</span>
+										<span className="ml-1 text-slate-400">({getRate(stats.master.aj + stats.ultima.aj)}% AJ, {getRate(stats.master.sss + stats.ultima.sss)}% SSS)</span>
+									</p>
+									<p className="text-[10px] text-red-600 text-center font-bold">
+										MAX-{stats.master.lost + stats.ultima.lost}
 									</p>
 								</div>
 							)}
