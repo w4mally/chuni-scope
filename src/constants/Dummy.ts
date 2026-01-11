@@ -79,7 +79,8 @@ export const DUMMY_DATA: ChuniData = {
         { title: "Test Song B", difficulty: "ULTIMA", levelStr: "15", score: 1005000, isPlayed: true },
         { title: "Test Song C", difficulty: "MASTER", levelStr: "13+", score: 1010000, isPlayed: true },
         { title: "Test Song D", difficulty: "MASTER", levelStr: "12", score: 1007500, isPlayed: true },
-        { title: "Test Song E", difficulty: "ULTIMA", levelStr: "14", score: 995000, isPlayed: false },
+        { title: "Test Song E", difficulty: "ULTIMA", levelStr: "14", score: 0, isPlayed: false },
+        { title: "Test Song E", difficulty: "ULTIMA", levelStr: "14", score: 1010000, isPlayed: true },
     ],
     totals: {
         master: { 
