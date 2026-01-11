@@ -39,8 +39,8 @@ export interface LevelData {
 export interface ChuniData {
     allCharts: number
     player: PlayerInfo;
-    scores: ScoreData[];
     levelStats: Record<string, LevelData>;
+    scores: ScoreData[];
     totals: {
         master: DifficultyStat;
         ultima: DifficultyStat;
