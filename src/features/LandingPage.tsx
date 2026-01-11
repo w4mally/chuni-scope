@@ -24,7 +24,7 @@ export const LandingPage = ({ onShowHowTo }: LandingViewProps) => {
 				{
 			date: '2026.1.12',
 			version: 'v1.0.1',
-			content: '生成した画像の表記が一部間違っていたのを修正しました。',
+			content: '生成した画像の表記が一部間違っていたのを修正しました。端末がダークモードの時に各種ボタンが見えにくかった問題を修正しました。',
 		},
 	];
 
@@ -244,7 +244,7 @@ export const LandingPage = ({ onShowHowTo }: LandingViewProps) => {
 						<p className="text-xs text-slate-500 leading-relaxed">
 							本サービスは個人が開発した非公式ツールです。株式会社セガ（SEGA）様とは一切関係ありません。
 						</p>
-						<p className="text-xs text-slate-400 leading-relaxed">
+						<p className="text-xs text-slate-500 leading-relaxed">
 							本ツールの利用によって生じたデータの損失、アカウントの制限、その他いかなるトラブルや損害についても、製作者は一切の責任を負いかねます。
 						</p>
 					</div>
