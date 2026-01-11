@@ -8,7 +8,7 @@ import { Dashboard } from './components/Dashboard.tsx';
 import { MobileShareButton } from './components/MobileShareButton.tsx';
 import { HeaderShareButton } from './components/HeaderShareButton.tsx';
 
-import { DUMMY_DATA } from './constants/Dummy.ts';
+// import { DUMMY_DATA } from './constants/Dummy.ts';
 
 function App() {
 	const [data, setData] = useState<ChuniData | null>(null);
@@ -68,6 +68,7 @@ function App() {
 				{!data && <LandingPage onShowHowTo={() => setShowHowTo(true)} />}
 
 				{/*デバック用ボタン 本番環境デプロイの時に必ず隠す*/}
+				{/*
 				{!data && (
 					<div className="flex justify-center mt-8">
 						<button
@@ -78,6 +79,7 @@ function App() {
 						</button>
 					</div>
 				)}
+				*/}
 
 				{data && <Dashboard data={data} />}
 			</div>
