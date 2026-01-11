@@ -17,9 +17,14 @@ export const LandingPage = ({ onShowHowTo }: LandingViewProps) => {
 
 	const updateHistory = [
 		{
-			date: '2026.1.10',
+			date: '2026.1.11',
 			version: 'v1.0.0',
 			content: 'CHUNI SCOPEを公開しました。',
+		},
+				{
+			date: '2026.1.12',
+			version: 'v1.0.1',
+			content: '生成した画像の表記が一部間違っていたのを修正しました。',
 		},
 	];
 
