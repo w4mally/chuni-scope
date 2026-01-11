@@ -46,10 +46,10 @@ const StatCard = ({ label, mascount, mastotal, ultcount, ulttotal, colorKey, isE
 					></div>
 				</div>
 			</div>
-			<div className="text-[10px] text-slate-400 mt-2 font-medium">
+			<div className="text-[10px] text-black-600 mt-2 font-medium">
 				MASTER: {mascount} / {mastotal}
 			</div>
-			<div className="text-[10px] text-slate-400 mt-1 font-medium">
+			<div className="text-[10px] text-black-600 mt-1 font-medium">
 				ULTIMA: {ultcount} / {ulttotal}
 			</div>
 		</div>

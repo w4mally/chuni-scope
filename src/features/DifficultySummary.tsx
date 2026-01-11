@@ -87,9 +87,9 @@ const DifficultySummary = ({ data , isExport = false}: DifficultySummaryProps) =
 										></div>
 									</div>
 
-									<p className="text-[8px] text-slate-400 text-center font-bold">
+									<p className="text-[8px] bg-black-600 text-center font-bold">
 										TOTAL: {stats.master.total + stats.ultima.total}{' '}
-										<span className="ml-1 text-slate-400">({getRate(stats.master.aj + stats.ultima.aj)}% AJ, {getRate(stats.master.sss + stats.ultima.sss)}% SSS)</span>
+										<span className="ml-1">({getRate(stats.master.aj + stats.ultima.aj)}% AJ, {getRate(stats.master.sss + stats.ultima.sss)}% SSS)</span>
 									</p>
 									<p className="text-[10px] text-red-600 text-center font-bold">
 										MAX-{stats.master.lost + stats.ultima.lost}
