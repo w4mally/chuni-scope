@@ -63,7 +63,7 @@
 		``;
 
 		const baseUrl = 'https://chuni-scope.vercel.app';
-		//const baseUrl = 'http://localhost:3000/';
+		// const baseUrl = 'http://localhost:3000/';
 
 		try {
 			const response = await fetch(`${baseUrl}/api/save`, {
@@ -179,7 +179,7 @@
 
 			const targetStats = levelStats[label][difficulty.toLowerCase()];
 
-			levelStats[label].total++;
+			targetStats.total++;
 
 			const scoreRaw = block
 				.querySelector('.play_musicdata_highscore .text_b')
@@ -194,7 +194,6 @@
 				} else if (score >= 1007500) {
 					targetStats.sss++;
 				}
-
 				const iconSrcs = Array.from(block.querySelectorAll('.play_musicdata_icon img')).map(
 					(img) => img.src
 				);
@@ -260,7 +259,6 @@
 		allCharts: grandTotal.total,
 		player: {
 			...player,
-			// ここには従来の「合算値」を入れておくと、プロフィール表示が壊れません
 			sss: grandTotal.sss,
 			sssPlus: grandTotal.sssPlus,
 			aj: grandTotal.aj,
