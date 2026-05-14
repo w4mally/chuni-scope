@@ -62,8 +62,8 @@
 		stElement.innerText = 'データ送信中...';
 		``;
 
-		const baseUrl = 'https://chuni-scope.vercel.app';
-		// const baseUrl = 'http://localhost:3000/';
+		// const baseUrl = 'https://chuni-scope.vercel.app';
+		const baseUrl = 'http://localhost:3000/';
 
 		try {
 			const response = await fetch(`${baseUrl}/api/save`, {
@@ -145,6 +145,7 @@
 		'14+',
 		'15',
 		'15+',
+		'16',
 	];
 	const allScores = [];
 	const levelStats = {};
@@ -206,6 +207,53 @@
 				allScores.push({ title: '', difficulty, levelStr: label, score, isPlayed: false });
 			}
 		});
+	}
+
+	const res = await fetch(
+		'https://new.chunithm-net.com/chuni-mobile/html/mobile/record/musicGenre/ultima',
+		{
+			method: 'POST',
+			headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+			body: new URLSearchParams({ token }),
+		}
+	);
+	const doc = new DOMParser().parseFromString(await res.text(), 'text/html');
+	const blocks = doc.querySelectorAll('.musiclist_box');
+	const melodiniqBlock = Array.from(blocks).find((block) =>
+		block.textContent?.includes('Melodiniq')
+	);
+	if (melodiniqBlock) {
+		const label = '16';
+		const difficulty = 'ULTIMA';
+
+		const targetStats = levelStats[label][difficulty.toLowerCase()];
+
+		targetStats.total++;
+
+		const scoreRaw = melodiniqBlock
+			.querySelector('.play_musicdata_highscore .text_b')
+			?.innerText.replace(/,/g, '');
+		const score = scoreRaw ? parseInt(scoreRaw) : 0;
+
+		if (score > 0) {
+			targetStats.lost += 1010000 - score;
+			if (score >= 1009000) {
+				targetStats.sssPlus++;
+				targetStats.sss++;
+			} else if (score >= 1007500) {
+				targetStats.sss++;
+			}
+			const iconSrcs = Array.from(block.querySelectorAll('.play_musicdata_icon img')).map(
+				(img) => img.src
+			);
+			if (iconSrcs.some((s) => s.includes('icon_alljusticecritical'))) targetStats.ajc++;
+			if (iconSrcs.some((s) => s.includes('icon_alljustice'))) targetStats.aj++;
+			if (iconSrcs.some((s) => s.includes('icon_fullchain'))) targetStats.fc++;
+
+			allScores.push({ title: '', difficulty, levelStr: label, score, isPlayed: true });
+		} else {
+			allScores.push({ title: '', difficulty, levelStr: label, score, isPlayed: false });
+		}
 	}
 
 	if (allScores.length === 0) {
