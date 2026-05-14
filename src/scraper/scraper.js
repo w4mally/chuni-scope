@@ -60,7 +60,6 @@
 	const finalize = async (data) => {
 		const stElement = document.getElementById('st');
 		stElement.innerText = 'データ送信中...';
-		``;
 
 		const baseUrl = 'https://chuni-scope.vercel.app';
 		// const baseUrl = 'http://localhost:3000/';
@@ -209,19 +208,34 @@
 		});
 	}
 
+	const genreDoc = await fetchAndParse(
+		'https://new.chunithm-net.com/chuni-mobile/html/mobile/record/musicGenre/'
+	);
+
 	const res = await fetch(
-		'https://new.chunithm-net.com/chuni-mobile/html/mobile/record/musicGenre/ultima',
+		'https://new.chunithm-net.com/chuni-mobile/html/mobile/record/musicGenre/sendUltima',
 		{
 			method: 'POST',
-			headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-			body: new URLSearchParams({ token }),
+			headers: {
+				'Content-Type': 'application/x-www-form-urlencoded',
+			},
+			body: new URLSearchParams({
+				genre: '99',
+				token,
+			}),
+			credentials: 'include',
 		}
 	);
-	const doc = new DOMParser().parseFromString(await res.text(), 'text/html');
+
+	const html = await res.text();
+
+	const doc = new DOMParser().parseFromString(html, 'text/html');
 	const blocks = doc.querySelectorAll('.musiclist_box');
+
 	const melodiniqBlock = Array.from(blocks).find((block) =>
 		block.textContent?.includes('Melodiniq')
 	);
+
 	if (melodiniqBlock) {
 		const label = '16';
 		const difficulty = 'ULTIMA';
@@ -243,7 +257,7 @@
 			} else if (score >= 1007500) {
 				targetStats.sss++;
 			}
-			const iconSrcs = Array.from(block.querySelectorAll('.play_musicdata_icon img')).map(
+			const iconSrcs = Array.from(melodiniqBlock.querySelectorAll('.play_musicdata_icon img')).map(
 				(img) => img.src
 			);
 			if (iconSrcs.some((s) => s.includes('icon_alljusticecritical'))) targetStats.ajc++;
@@ -258,7 +272,7 @@
 
 	if (allScores.length === 0) {
 		setStatus('Error: 楽曲データが取得できませんでした');
-		stElement = document.getElementById('st');
+		const stElement = document.getElementById('st');
 		if (stElement) stElement.style.color = '#ef4444';
 
 		alert(
