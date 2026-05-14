@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { RiTwitterXFill } from 'react-icons/ri';
+
 interface LandingViewProps {
 	onShowHowTo: () => void;
 }
@@ -46,22 +46,6 @@ export const LandingPage = ({ onShowHowTo }: LandingViewProps) => {
 					<br />
 					可視化する非公式スコアツールです。
 				</p>
-
-				<div className="flex justify-center pt-2">
-					<a
-						href="https://x.com/Alc5_"
-						target="_blank"
-						rel="noopener noreferrer"
-						className="group flex items-center gap-2 px-4 py-2 bg-white border border-slate-200 rounded-full text-slate-500 hover:text-blue-600 hover:border-blue-200 hover:bg-blue-50 transition-all duration-300 shadow-sm"
-					>
-						<RiTwitterXFill
-							size={16}
-							fill="currentColor"
-							className="text-black group-hover:scale-110 transition-transform"
-						/>
-						<span className="text-black font-bold">Developed by @Alc5_</span>
-					</a>
-				</div>
 			</header>
 
 			{/* 使い方ガイド */}
