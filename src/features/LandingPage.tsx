@@ -236,7 +236,7 @@ export const LandingPage = ({ onShowHowTo }: LandingViewProps) => {
 							本サービスは個人が開発した非公式ツールです。株式会社セガ（SEGA）様とは一切関係ありません。
 						</p>
 						<p className="text-xs text-slate-500 leading-relaxed">
-							本ツールの利用によって生じたデータの損失、アカウントの制限、その他いかなるトラブルや損害についても、製作者は一切の責任を負いかねます。
+							本ツールの利用によって生じたデータの損失、アカウントの制限、その他いかなるトラブルや損害についても、開発者は一切の責任を負いかねます。
 						</p>
 					</div>
 				</div>
